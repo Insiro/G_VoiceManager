@@ -193,3 +193,8 @@ pyrightconfig.json
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode
+
+
+temp/input_pck/*
+temp/output_pck/*
+temp/wem/*
