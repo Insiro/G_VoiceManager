@@ -7,7 +7,6 @@ from .config import Config
 from .utils.error import (
     ModNameNotValidException,
     ModSourceNotReadyException,
-    NoGeneratedModFiles,
     NotValidPathException,
 )
 
@@ -20,9 +19,9 @@ class ModTool:
         self.config = config
         check_mkdirs(config.temp_path)
         check_mkdirs(config.resource_path)
-        check_mkdirs(config.mods_path)
+        check_mkdirs(config.mod_sources_path)
         check_mkdirs(config.backup_path)
-        check_mkdirs(config.applied_mods_path)
+        check_mkdirs(config.packed_mods_path)
 
         self.input_path = config.backup_path
         pass
@@ -51,7 +50,7 @@ class ModTool:
         rmtree(self.config.wem_path)
 
     def prepare_mod_source(self, source: str) -> int:
-        mod_path = path.join(self.config.mods_path, source)
+        mod_path = path.join(self.config.mod_sources_path, source)
         if not os.listdir(mod_path):
             raise ModNameNotValidException()
         copy_contents(mod_path, self.config.wem_path, "preparing mod files")
@@ -64,7 +63,7 @@ class ModTool:
     def pack_mod_files(self, mod_name: str, state: int):
         config = self.config
 
-        mod_path = path.join(self.config.applied_mods_path, mod_name)
+        mod_path = path.join(self.config.packed_mods_path, mod_name)
         if path.isdir(mod_path):
             rmtree(mod_path)
 
@@ -81,7 +80,7 @@ class ModTool:
 
     # Step 4 : Apply Mod
     def apply(self, mod_name: str):
-        mod_path = path.join(self.config.applied_mods_path, mod_name)
+        mod_path = path.join(self.config.packed_mods_path, mod_name)
         if not path.isdir(mod_path):
             raise ModNameNotValidException()
 
@@ -106,3 +105,4 @@ class ModTool:
             os.symlink(origin, sym)
         else:
             move(origin, sym)
+

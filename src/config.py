@@ -6,7 +6,7 @@ class Config:
     temp_path: str
     resource_path: str
     genshin_path: str  # Path to Genshin Path, audio path will replaced as Symbolic Link
-    mods_path: str  # path to Origianl Mod Source Files Saved
+    mod_sources_path: str  # path to Origianl Mod Source Files Saved
     language: str
     backup_path: str
 
@@ -15,7 +15,7 @@ class Config:
         temp_path: str,
         resource_path: str,
         genshin_path: str,
-        mods_path: str,
+        mod_sources_path: str,
         backup_path: str,
         language: str,
     ):
@@ -23,7 +23,7 @@ class Config:
         config.temp_path = temp_path
         config.resource_path = resource_path
         config.genshin_path = genshin_path
-        config.mods_path = mods_path
+        config.mod_sources_path = mod_sources_path
         config.language = language
         config.backup_path = backup_path
         return config
@@ -37,7 +37,7 @@ class Config:
         return path.join(self.temp_path, "output_pck")
 
     @property
-    def applied_mods_path(self) -> str:  # Path to Mod Applied Path
+    def packed_mods_path(self) -> str:  # Path to Mod Applied Path
         return path.join(self.resource_path, "applied")
 
     @property
@@ -56,7 +56,7 @@ class Config:
                 return Config.__assign(**json.load(fp))
         return Config.__assign(
             temp_path=".\\temp",
-            mods_path=".\\resources\\mods",
+            mod_sources_path=".\\resources\\mods",
             resource_path=".\\resources",
             genshin_path="C:\\Program Files\\Genshin Impact\\Genshin Impact game",
             language="Korean",

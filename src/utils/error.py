@@ -17,8 +17,5 @@ class ModSourceNotReadyException(ModManagerException):
     _msg = "not prepared mod source files"
 
 
-class NoGeneratedModFiles(ModManagerException):
-    _msg = "generated mod files not Exists"
-
 class NotValidPathException(ModManagerException):
     _msg = "Not Valid Path"
