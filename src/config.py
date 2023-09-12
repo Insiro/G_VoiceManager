@@ -8,6 +8,7 @@ class Config:
     genshin_path: str  # Path to Genshin Path, audio path will replaced as Symbolic Link
     mods_path: str  # path to Origianl Mod Source Files Saved
     language: str
+    backup_path: str
 
     @staticmethod
     def __assign(
@@ -15,6 +16,7 @@ class Config:
         resource_path: str,
         genshin_path: str,
         mods_path: str,
+        backup_path: str,
         language: str,
     ):
         config = Config()
@@ -23,6 +25,7 @@ class Config:
         config.genshin_path = genshin_path
         config.mods_path = mods_path
         config.language = language
+        config.backup_path = backup_path
         return config
 
     @property
@@ -32,10 +35,6 @@ class Config:
     @property
     def output_pck_path(self) -> str:
         return path.join(self.temp_path, "output_pck")
-
-    @property
-    def backup_path(self) -> str:  # Path to Original Sound Backup Directory
-        return path.join(self.resource_path, "backup")
 
     @property
     def applied_mods_path(self) -> str:  # Path to Mod Applied Path
@@ -56,11 +55,12 @@ class Config:
             with open("config.json", "r") as fp:
                 return Config.__assign(**json.load(fp))
         return Config.__assign(
-            temp_path="..\\temp",
+            temp_path=".\\temp",
             mods_path=".\\resources\\mods",
             resource_path=".\\resources",
             genshin_path="C:\\Program Files\\Genshin Impact\\Genshin Impact game",
             language="Korean",
+            backup_path=".\\resources\\backup",
         )
 
     def save(self):
