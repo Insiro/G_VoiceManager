@@ -43,9 +43,7 @@ class ModTool:
     # region Step 2 : mod source insert
     def set_input_path(self, input_path: str | None = None):
         if input_path is None:
-            self.input_path = path.join(
-                self.config.backup_path, self.config.language
-            )
+            self.input_path = path.join(self.config.backup_path, self.config.language)
             return
         self.input_path = input_path
 
@@ -61,31 +59,26 @@ class ModTool:
 
     # endregion
 
-    # region Step 3 : generate mod files
-    def pack_mod_files(self, state: int) -> int:
+    # Step 3 : generate mod files
+
+    def pack_mod_files(self, mod_name: str, state: int):
         config = self.config
+
+        mod_path = path.join(self.config.applied_mods_path, mod_name)
+        if path.isdir(mod_path):
+            rmtree(mod_path)
+
         if state != 0 or is_empty_dir(config.wem_path):
             raise ModSourceNotReadyException()
-        clear_dir(config.output_pck_path)
+        clear_dir(mod_path)
         print("packing mod files")
         repack(
             config.wem_path,
             self.input_path,
-            config.output_pck_path,
+            mod_path,
         )
-
-        return 1
-
-    def save_mod_file(self, mod_name: str, state: int):
-        if state != 1 or is_empty_dir(self.config.output_pck_path):
-            raise NoGeneratedModFiles()
-        mod_path = path.join(self.config.applied_mods_path, mod_name)
-        if path.isdir(mod_path):
-            rmtree(mod_path)
         print("save packed mod file")
-        move(self.config.output_pck_path, mod_path)
 
-    # endregion
     # Step 4 : Apply Mod
     def apply(self, mod_name: str):
         mod_path = path.join(self.config.applied_mods_path, mod_name)
@@ -95,7 +88,7 @@ class ModTool:
         copy_contents(
             path.join(self.config.backup_path, self.config.language),
             mod_path,
-            "coping missing files",
+            "copying missing files",
             lambda file: not path.exists(path.join(mod_path, file)),
         )
         print("make symlink")

@@ -5,22 +5,21 @@ config = Config.load()
 tool = ModTool(config)
 
 
-tool.move_and_link_original()
+# tool.move_and_link_original()
 
 
 modName = "fem_wanderer_11"
 
 # # insert Mod Source
 tool.set_input_path()
-# tool.clear_mod_source()
-# state = tool.prepare_mod_source(modName)
+tool.clear_mod_source()
+state = tool.prepare_mod_source(modName)
 
 # # Mod Generate
-# state = tool.pack_mod_files(state)
-# tool.save_mod_file(modName, state)
+state = tool.pack_mod_files(modName, state)
 
 # # Apply
-# tool.apply(modName)
+tool.apply(modName)
 # tool.restore(False)
 # tool.restore(False)
 # tool.restore(True)
