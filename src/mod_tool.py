@@ -29,7 +29,7 @@ class ModTool:
 
     # Step 1 : backup
     def move_and_link_original(self):
-        if path.islink(self.config.sym_path):
+        if path.islink(self.config.sym_path) or not path.isdir(self.config.sym_path):
             raise NotValidPathException(
                 "selected language is Not installed or Already Linked"
             )
@@ -38,14 +38,16 @@ class ModTool:
             rmtree(lang_backup)
         print("backup original sound files")
         move(self.config.sym_path, self.config.backup_path)
-        os.symlink(self.config.sym_path, self.config.backup_path)
+        os.symlink(lang_backup, self.config.sym_path, True)
 
     # region Step 2 : mod source insert
-    def set_input_path(self, path: str | None):
-        if path is None:
-            self.input_path = self.config.backup_path
+    def set_input_path(self, input_path: str | None = None):
+        if input_path is None:
+            self.input_path = path.join(
+                self.config.backup_path, self.config.language
+            )
             return
-        self.input_path = path
+        self.input_path = input_path
 
     def clear_mod_source(self):
         rmtree(self.config.wem_path)
@@ -68,7 +70,7 @@ class ModTool:
         print("packing mod files")
         repack(
             config.wem_path,
-            path.join(self.input_path, config.language),
+            self.input_path,
             config.output_pck_path,
         )
 
@@ -101,5 +103,13 @@ class ModTool:
             os.unlink(self.config.sym_path)
         os.symlink(mod_path, self.config.sym_path)
 
-    def restore(self):
-        pass
+    def restore(self, link=True):
+        if path.islink(self.config.sym_path):
+            os.unlink(self.config.sym_path)
+        origin = path.join(self.config.backup_path, self.config.language)
+        sym = self.config.sym_path
+
+        if link:
+            os.symlink(origin, sym)
+        else:
+            move(origin, sym)

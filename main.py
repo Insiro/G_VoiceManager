@@ -3,13 +3,15 @@ from src.mod_tool import ModTool
 
 config = Config.load()
 tool = ModTool(config)
-# tool.move_and_link_original()
+
+
+tool.move_and_link_original()
 
 
 modName = "fem_wanderer_11"
 
 # # insert Mod Source
-# tool.set_input_path(config.backup_path)
+tool.set_input_path()
 # tool.clear_mod_source()
 # state = tool.prepare_mod_source(modName)
 
@@ -18,4 +20,7 @@ modName = "fem_wanderer_11"
 # tool.save_mod_file(modName, state)
 
 # # Apply
-tool.apply(modName)
+# tool.apply(modName)
+# tool.restore(False)
+# tool.restore(False)
+# tool.restore(True)
