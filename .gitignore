@@ -198,3 +198,5 @@ pyrightconfig.json
 temp/input_pck/*
 temp/output_pck/*
 temp/wem/*
+resources/*
+config.json
