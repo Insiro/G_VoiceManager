@@ -106,3 +106,18 @@ class ModTool:
         else:
             move(origin, sym)
 
+    def get_applied_mods(self) -> list[str]:
+        items = os.listdir(self.config.packed_mods_path)
+        return [
+            item
+            for item in items
+            if path.isdir(path.join(self.config.packed_mods_path, item))
+        ]
+
+    def get_mod_sources(self) -> list[str]:
+        items = os.listdir(self.config.mod_sources_path)
+        return [
+            item
+            for item in items
+            if path.isdir(path.join(self.config.mod_sources_path, item))
+        ]
