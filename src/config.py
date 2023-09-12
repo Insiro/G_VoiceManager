@@ -1,10 +1,6 @@
 from os import path
 import json
 
-output_path = "../temp/output_pck/"
-original_path = ""
-# D:\Game\Genshin Impact game\GenshinImpact_Data\StreamingAssets\AudioAssets\Korean
-
 
 class Config:
     temp_path: str

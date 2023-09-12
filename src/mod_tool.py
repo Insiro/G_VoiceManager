@@ -1,58 +1,33 @@
 import os
 from os import path
-from shutil import copyfile, rmtree, copytree, move
-from typing import Callable
-from tqdm import tqdm
+from shutil import rmtree, move
 
-from repack.repack import repack
-from config import Config
-from Error import (
+from .repack.repack import repack
+from .config import Config
+from .utils.error import (
     ModNameNotValidException,
     ModSourceNotReadyException,
     NoGeneratedModFiles,
+    NotValidPathException,
 )
-from src.Error import NotValidPathException
 
 
-class ModApplier:
+from .utils.dir import check_mkdirs, is_empty_dir, clear_dir, copy_contents
+
+
+class ModTool:
     def __init__(self, config: Config) -> None:
         self.config = config
-        self.check_mkdirs(config.temp_path)
-        self.check_mkdirs(config.resource_path)
-        self.check_mkdirs(config.mods_path)
-        self.check_mkdirs(config.backup_path)
-        self.check_mkdirs(config.applied_mods_path)
+        check_mkdirs(config.temp_path)
+        check_mkdirs(config.resource_path)
+        check_mkdirs(config.mods_path)
+        check_mkdirs(config.backup_path)
+        check_mkdirs(config.applied_mods_path)
 
         self.input_path = config.backup_path
         pass
 
-    def check_mkdirs(self, dir):
-        if not path.isdir(dir):
-            os.makedirs(dir)
-
-    def clear_dir(self, dir):
-        if path.isdir(dir):
-            rmtree(dir)
-        os.mkdir(dir)
-
-    def copy_contents(
-        self,
-        src: str,
-        dist: str,
-        msg: str | None = None,
-        condition: Callable[[str], bool] = lambda file: True,
-    ):
-        self.check_mkdirs(dist)
-        for item in tqdm(os.listdir(src), msg):
-            if not condition(item):
-                continue
-            src_item = path.join(src, item)
-            dist_item = path.join(dist, item)
-            if path.isdir(src_item):
-                copytree(src_item, dist_item)
-            else:
-                copyfile(src_item, dist_item)
-
+    # Step 1 : backup
     def move_and_link_original(self):
         if path.islink(self.config.sym_path):
             raise NotValidPathException(
@@ -65,11 +40,12 @@ class ModApplier:
         move(self.config.sym_path, self.config.backup_path)
         os.symlink(self.config.sym_path, self.config.backup_path)
 
-    def is_empty_dir(self, dir) -> bool:
-        with os.scandir(dir) as it:
-            if any(it):
-                return False
-        return True
+    # region Step 2 : mod source insert
+    def set_input_path(self, path: str | None):
+        if path is None:
+            self.input_path = self.config.backup_path
+            return
+        self.input_path = path
 
     def clear_mod_source(self):
         rmtree(self.config.wem_path)
@@ -78,20 +54,17 @@ class ModApplier:
         mod_path = path.join(self.config.mods_path, source)
         if not os.listdir(mod_path):
             raise ModNameNotValidException()
-        self.copy_contents(mod_path, self.config.wem_path, "preparing mod files")
+        copy_contents(mod_path, self.config.wem_path, "preparing mod files")
         return 0
 
-    def set_input_path(self, path: str | None):
-        if path is None:
-            self.input_path = self.config.backup_path
-            return
-        self.input_path = path
+    # endregion
 
+    # region Step 3 : generate mod files
     def pack_mod_files(self, state: int) -> int:
         config = self.config
-        if state != 0 or self.is_empty_dir(config.wem_path):
+        if state != 0 or is_empty_dir(config.wem_path):
             raise ModSourceNotReadyException()
-        self.clear_dir(config.output_pck_path)
+        clear_dir(config.output_pck_path)
         print("packing mod files")
         repack(
             config.wem_path,
@@ -102,7 +75,7 @@ class ModApplier:
         return 1
 
     def save_mod_file(self, mod_name: str, state: int):
-        if state != 1 or self.is_empty_dir(self.config.output_pck_path):
+        if state != 1 or is_empty_dir(self.config.output_pck_path):
             raise NoGeneratedModFiles()
         mod_path = path.join(self.config.applied_mods_path, mod_name)
         if path.isdir(mod_path):
@@ -110,12 +83,14 @@ class ModApplier:
         print("save packed mod file")
         move(self.config.output_pck_path, mod_path)
 
+    # endregion
+    # Step 4 : Apply Mod
     def apply(self, mod_name: str):
         mod_path = path.join(self.config.applied_mods_path, mod_name)
         if not path.isdir(mod_path):
             raise ModNameNotValidException()
 
-        self.copy_contents(
+        copy_contents(
             path.join(self.config.backup_path, self.config.language),
             mod_path,
             "coping missing files",
