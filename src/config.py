@@ -61,7 +61,8 @@ class Config:
         if path.isfile("config.json"):
             with open("config.json", "r") as fp:
                 return Config.__assign(**json.load(fp))
-        return Config.__assign(
+
+        conf = Config.__assign(
             temp_path=".\\temp",
             mod_sources_path=".\\resources\\mods",
             resource_path=".\\resources",
@@ -69,6 +70,8 @@ class Config:
             language="Korean",
             backup_path=".\\resources\\backup",
         )
+        conf.save()
+        return conf
 
     def save(self):
         with open("config.json", "w") as fp:
