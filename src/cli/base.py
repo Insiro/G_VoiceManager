@@ -1,6 +1,6 @@
 from src.mod_tool import ModTool
 from abc import ABCMeta, abstractmethod
-from src.service import DirService
+from src.service import ModService
 from time import sleep
 import os
 
@@ -11,11 +11,11 @@ BREAK = False
 class Cli(metaclass=ABCMeta):
     _menu: dict[int, str] = {}
     _tool: ModTool
-    _service: DirService
+    _service: ModService
     _level: str = "Menu Name, Required Override"
 
     @classmethod
-    def run(cls, service: DirService):
+    def run(cls, service: ModService):
         cli = cls()
         cli._service = service
         state = True
@@ -57,8 +57,8 @@ class Cli(metaclass=ABCMeta):
         if clear:
             self.clear_terminal()
 
-    def __get_input_number(self, msg: str) -> int | None:
-        selected = input(f"select {msg} number : ")
+    def __get_input_number(self, select_name: str) -> int | None:
+        selected = input(f"select {select_name} number : ")
         if selected == "-1":
             return -1
         if selected.isdecimal():
@@ -66,12 +66,12 @@ class Cli(metaclass=ABCMeta):
         return None
 
     def _sub_menu(
-        self, mod_name: str, selection_name: str, options: list[str]
+        self, menu_name: str, selection_name: str, options: list[str]
     ) -> str | None:
         while True:
             self.clear_terminal()
             print("\n==========================")
-            print(f"menu\t| {self._level} > {mod_name}")
+            print(f"menu\t| {self._level} > {menu_name}")
             print("0\t: cancel")
             for idx, option in enumerate(options):
                 print(f"{idx+1}\t: {option}")

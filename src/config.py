@@ -41,6 +41,13 @@ class Config:
         return path.join(self.resource_path, "applied")
 
     @property
+    def lang_list_path(self) -> str:
+        return path.join(
+            self.genshin_path,
+            "GenshinImpact_Data\\StreamingAssets\\AudioAssets",
+        )
+
+    @property
     def sym_path(self) -> str:
         sym = path.join(
             self.genshin_path,
