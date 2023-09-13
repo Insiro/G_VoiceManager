@@ -31,7 +31,8 @@ class ConfigCli(Cli):
             self.conf_service.language = selected
             # TODO: list languages, select
             return CONTINUE
-
+        if selected_idx == 5:
+            print("recommand to select save disk drive with genshin")
         selected = self.select_path(selected_idx)
         if selected == None:
             return CONTINUE
