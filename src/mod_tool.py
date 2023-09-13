@@ -7,11 +7,12 @@ from .config import Config
 from .utils.error import NotValidPathException
 
 
-from .utils.dir import check_mkdirs, clear_dir, copy_contents
+from .utils.dir import check_mkdirs, clear_dir, copy_contents, link_contents
 
 
 class ModTool:
     input_path: str
+    input_changed = False
 
     def __init__(self, config: Config) -> None:
         self.config = config
@@ -37,9 +38,11 @@ class ModTool:
 
     # region Step 2 : mod source insert
     def reset_input_path(self):
+        self.input_changed = False
         self.input_path = path.join(self.config.backup_path, self.config.language)
 
     def set_input_path(self, input_path: str):
+        self.input_changed = True
         self.input_path = input_path
 
     def clear_mod_source(self):
@@ -64,14 +67,23 @@ class ModTool:
 
     # Step 4 : Apply Mod
     def apply(self, mod_path: str):
-        copy_contents(
-            path.join(self.config.backup_path, self.config.language),
-            mod_path,
-            "copying missing files",
-            lambda file: not path.exists(path.join(mod_path, file)),
-        )
+        lang_backup_path = path.join(self.config.backup_path, self.config.language)
+        if self.input_changed:
+            copy_contents(
+                lang_backup_path,
+                mod_path,
+                "copying missing files",
+                lambda file: file.startswith("External")
+                and not path.exists(path.join(mod_path, file)),
+            )
         os.unlink(self.config.sym_path)
         os.symlink(mod_path, self.config.sym_path)
+        link_contents(
+            lang_backup_path,
+            mod_path,
+            "linking other files",
+            lambda file: not path.exists(path.join(mod_path, file)),
+        )
 
     def restore(self, link=True):
         os.unlink(self.config.sym_path)
