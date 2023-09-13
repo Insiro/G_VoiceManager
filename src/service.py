@@ -6,7 +6,7 @@ from src.utils.dir import is_empty_dir
 from src.utils.error import (
     ModNameNotValidException,
     ModSourceNotReadyException,
-    NatValidDirException,
+    NotValidDirException,
     NotValidSymLinkException,
 )
 
@@ -104,7 +104,7 @@ class ModService:
     # Step 1 : Backup
     def isolate_original(self):
         if self._is_symlink_valid:
-            raise NatValidDirException()
+            raise NotValidDirException()
         self._tool.move_and_link_original()
         self._is_symlink_valid = True
 
@@ -157,7 +157,7 @@ class ModService:
 
     def validDir(self, dir: str):
         if not path.isdir(dir):
-            raise NatValidDirException()
+            raise NotValidDirException()
 
     def updateSymLinkState(self):
         self._is_symlink_valid = path.islink(self._config.sym_path)

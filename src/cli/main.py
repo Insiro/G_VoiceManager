@@ -1,4 +1,4 @@
-from src.utils.error import NatValidDirException
+from src.utils.error import NotValidDirException
 from . import *
 
 
@@ -35,7 +35,8 @@ class MainCli(Cli):
         try:
             self._service.isolate_original()
             self.print_msg("backup complete")
-        except NatValidDirException:
+        except NotValidDirException as e:
+            e.trace()
             self.print_msg("Error : already symbloc link is generated")
 
     def __apply_menu(self):

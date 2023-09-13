@@ -1,3 +1,6 @@
+import traceback
+
+
 class ModManagerException(Exception):
     _msg = "DirNotReady"
 
@@ -8,8 +11,12 @@ class ModManagerException(Exception):
     def get_msg(self) -> str:
         return self._msg
 
+    def trace_back(self):
+        print(traceback.format_exc())
+        print(self._msg)
 
-class NatValidDirException(ModManagerException):
+
+class NotValidDirException(ModManagerException):
     _msg = "Not Valid Directory"
 
 
