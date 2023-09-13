@@ -36,7 +36,28 @@ def copy_contents(
             continue
         src_item = path.join(src, item)
         dist_item = path.join(dist, item)
+        if path.islink(dist_item):
+            os.unlink(dist_item)
+
         if path.isdir(src_item):
             copytree(src_item, dist_item)
         else:
             copyfile(src_item, dist_item)
+
+
+def link_contents(
+    src: str,
+    dist: str,
+    msg: str | None = None,
+    condition: Callable[[str], bool] = lambda file: True,
+):
+    check_mkdirs(dist)
+    for item in tqdm(os.listdir(src), msg):
+        if not condition(item):
+            continue
+
+        src_item = path.join(src, item)
+        dist_item = path.join(dist, item)
+        if path.islink(dist_item):
+            os.unlink(dist_item)
+        os.symlink(src_item, dist_item)
