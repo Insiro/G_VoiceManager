@@ -39,7 +39,7 @@ class GenerateCli(Cli):
         if mod_name == "original":
             self._service.reset_base()
         else:
-            self._service.select_base_mod()
+            self._service.select_base_mod(mod_name)
 
     def add_source_menu(self):
         sources = self._service.get_mod_sources()
@@ -49,10 +49,9 @@ class GenerateCli(Cli):
         self._service.prepare_mod_source(source)
 
     def __pack_mod(self):
-        while True:
-            name = input("input new mod Name : ")
-            try:
-                self._service.pack_mod(name)
-                self.print_msg("Successfully Packed mod", name)
-            except ModManagerException as e:
-                e.trace()
+        name = input("input new mod Name : ")
+        try:
+            self._service.pack_mod(name)
+            self.print_msg("Successfully Packed mod", name)
+        except ModManagerException as e:
+            e.trace()
