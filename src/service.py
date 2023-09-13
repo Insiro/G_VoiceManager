@@ -38,7 +38,15 @@ class ConfigService:
         self._conf.save()
 
     def get_langList(self):
-        return os.listdir(self._conf.lang_list_path)
+        items = os.listdir(self._conf.lang_list_path)
+        langs = []
+        for item in items:
+            item_dir = path.join(self._conf.lang_list_path, item)
+            if path.isfile(item_dir):
+                continue
+            langs.append(item)
+
+        return langs
 
     def format(self) -> str:
         conf = self._conf
