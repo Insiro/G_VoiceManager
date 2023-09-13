@@ -4,16 +4,15 @@ from shutil import rmtree, move
 
 from .repack.repack import repack
 from .config import Config
-from .utils.error import (
-    ModSourceNotReadyException,
-    NotValidPathException,
-)
+from .utils.error import NotValidPathException
 
 
-from .utils.dir import check_mkdirs, is_empty_dir, clear_dir, copy_contents
+from .utils.dir import check_mkdirs, clear_dir, copy_contents
 
 
 class ModTool:
+    input_path: str
+
     def __init__(self, config: Config) -> None:
         self.config = config
         check_mkdirs(config.temp_path)
@@ -22,7 +21,7 @@ class ModTool:
         check_mkdirs(config.backup_path)
         check_mkdirs(config.packed_mods_path)
 
-        self.input_path = config.backup_path
+        self.reset_input_path()
         pass
 
     # Step 1 : backup
@@ -53,19 +52,11 @@ class ModTool:
 
     # Step 3 : generate mod files
 
-    def pack_mod_files(self, mod_name: str, state: int):
-        config = self.config
-
-        mod_path = path.join(self.config.packed_mods_path, mod_name)
-        if path.isdir(mod_path):
-            rmtree(mod_path)
-
-        if state != 0 or is_empty_dir(config.wem_path):
-            raise ModSourceNotReadyException()
+    def pack_mod_files(self, mod_path: str):
         clear_dir(mod_path)
         print("packing mod files")
         repack(
-            config.wem_path,
+            self.config.wem_path,
             self.input_path,
             mod_path,
         )
