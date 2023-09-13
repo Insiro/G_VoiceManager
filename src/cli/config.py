@@ -24,7 +24,7 @@ class ConfigCli(Cli):
             self.conf_service.commit()
         if selected_idx == 6:
             selected = self._sub_menu(
-                "Language", "voce language", self.conf_service.get_langList()
+                "Language", "voice language", self.conf_service.get_langList()
             )
             if selected == None:
                 return CONTINUE
@@ -52,11 +52,9 @@ class ConfigCli(Cli):
         while True:
             print(f"change {self._menu[menu_idx][6:]}")
             spath = input(f"enter path : ").strip()
-            if spath == "0":
-                return None
             if not path.isdir(spath):
                 self.print_msg("wrong path selected")
-                continue
+                return None
             return spath
 
     def _on_enter_menu(self) -> bool:
