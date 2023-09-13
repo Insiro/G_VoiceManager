@@ -5,7 +5,6 @@ from shutil import rmtree, move
 from .repack.repack import repack
 from .config import Config
 from .utils.error import (
-    ModNameNotValidException,
     ModSourceNotReadyException,
     NotValidPathException,
 )
@@ -28,33 +27,27 @@ class ModTool:
 
     # Step 1 : backup
     def move_and_link_original(self):
-        if path.islink(self.config.sym_path) or not path.isdir(self.config.sym_path):
-            raise NotValidPathException(
-                "selected language is Not installed or Already Linked"
-            )
+        if not path.isdir(self.config.sym_path):
+            raise NotValidPathException("selected language is Not installed")
         lang_backup = path.join(self.config.backup_path, self.config.language)
         if path.exists(lang_backup):
             rmtree(lang_backup)
-        print("backup original sound files")
+        print("--------backup original sound files------")
         move(self.config.sym_path, self.config.backup_path)
         os.symlink(lang_backup, self.config.sym_path, True)
 
     # region Step 2 : mod source insert
-    def set_input_path(self, input_path: str | None = None):
-        if input_path is None:
-            self.input_path = path.join(self.config.backup_path, self.config.language)
-            return
+    def reset_input_path(self):
+        self.input_path = path.join(self.config.backup_path, self.config.language)
+
+    def set_input_path(self, input_path: str):
         self.input_path = input_path
 
     def clear_mod_source(self):
         rmtree(self.config.wem_path)
 
-    def prepare_mod_source(self, source: str) -> int:
-        mod_path = path.join(self.config.mod_sources_path, source)
-        if not os.listdir(mod_path):
-            raise ModNameNotValidException()
-        copy_contents(mod_path, self.config.wem_path, "preparing mod files")
-        return 0
+    def prepare_mod_source(self, source_path: str):
+        copy_contents(source_path, self.config.wem_path, "preparing mod files")
 
     # endregion
 
@@ -79,25 +72,18 @@ class ModTool:
         print("save packed mod file")
 
     # Step 4 : Apply Mod
-    def apply(self, mod_name: str):
-        mod_path = path.join(self.config.packed_mods_path, mod_name)
-        if not path.isdir(mod_path):
-            raise ModNameNotValidException()
-
+    def apply(self, mod_path: str):
         copy_contents(
             path.join(self.config.backup_path, self.config.language),
             mod_path,
             "copying missing files",
             lambda file: not path.exists(path.join(mod_path, file)),
         )
-        print("make symlink")
-        if path.islink(self.config.sym_path):
-            os.unlink(self.config.sym_path)
+        os.unlink(self.config.sym_path)
         os.symlink(mod_path, self.config.sym_path)
 
     def restore(self, link=True):
-        if path.islink(self.config.sym_path):
-            os.unlink(self.config.sym_path)
+        os.unlink(self.config.sym_path)
         origin = path.join(self.config.backup_path, self.config.language)
         sym = self.config.sym_path
 
@@ -105,19 +91,3 @@ class ModTool:
             os.symlink(origin, sym)
         else:
             move(origin, sym)
-
-    def get_applied_mods(self) -> list[str]:
-        items = os.listdir(self.config.packed_mods_path)
-        return [
-            item
-            for item in items
-            if path.isdir(path.join(self.config.packed_mods_path, item))
-        ]
-
-    def get_mod_sources(self) -> list[str]:
-        items = os.listdir(self.config.mod_sources_path)
-        return [
-            item
-            for item in items
-            if path.isdir(path.join(self.config.mod_sources_path, item))
-        ]

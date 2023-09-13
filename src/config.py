@@ -66,3 +66,6 @@ class Config:
     def save(self):
         with open("config.json", "w") as fp:
             print(json.dump(self.__dict__, fp, indent=2))
+
+    def dump(self) -> str:
+        return json.dumps(self.__dict__, indent=2)

@@ -9,6 +9,10 @@ class ModManagerException(Exception):
         return self._msg
 
 
+class NatValidDirException(ModManagerException):
+    _msg = "Not Valid Directory"
+
+
 class ModNameNotValidException(ModManagerException):
     _msg = "Not Valid Mod Name"
 
@@ -19,3 +23,7 @@ class ModSourceNotReadyException(ModManagerException):
 
 class NotValidPathException(ModManagerException):
     _msg = "Not Valid Path"
+
+
+class NotValidSymLinkException(ModManagerException):
+    _msg = "Not Valid Symbolic Link"
