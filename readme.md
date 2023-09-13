@@ -33,6 +33,7 @@ pip3 install -r requirement.txt
 | language      | Language for apply mod                                                                     |
 
 <details><summary>Json Example</summary>
+    
 ```json
 {
     "temp_path": "C:\\temp",
@@ -43,6 +44,7 @@ pip3 install -r requirement.txt
     "language": "Korean"
 }
 ```
+    
 </details>
 
 ### Usage Stem
