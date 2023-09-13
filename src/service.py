@@ -42,7 +42,7 @@ class ConfigService:
 
     def format(self) -> str:
         conf = self._conf
-        len = max(
+        plen = max(
             len(conf.genshin_path),
             len(conf.backup_path),
             len(conf.mod_sources_path),
@@ -52,19 +52,19 @@ class ConfigService:
 
         return "\n".join(
             [
-                formatLine("genshin_path", conf.genshin_path, self.genshin_path, len),
-                formatLine("backup_path", conf.backup_path, self.backup_path, len),
+                formatLine("genshin_path", conf.genshin_path, self.genshin_path, plen),
+                formatLine("backup_path", conf.backup_path, self.backup_path, plen),
                 formatLine(
                     "mod_sources_path",
                     conf.mod_sources_path,
                     self.mod_sources_path,
-                    len,
+                    plen,
                 ),
                 formatLine(
-                    "resource_path", conf.resource_path, self.resource_path, len
+                    "resource_path", conf.resource_path, self.resource_path, plen
                 ),
-                formatLine("mod_language", conf.language, self.language, len),
-                formatLine("temp_path", conf.temp_path, self.temp_path, len),
+                formatLine("mod_language", conf.language, self.language, plen),
+                formatLine("temp_path", conf.temp_path, self.temp_path, plen),
             ]
         )
 

@@ -36,7 +36,7 @@ class MainCli(Cli):
             self._service.isolate_original()
             self.print_msg("backup complete")
         except NotValidDirException as e:
-            e.trace()
+            e.trace_back()
             self.print_msg("Error : already symbloc link is generated")
 
     def __apply_menu(self):
