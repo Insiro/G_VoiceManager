@@ -56,7 +56,7 @@ def link_contents(
         if not condition(item):
             continue
 
-        src_item = path.join(src, item)
+        src_item = path.abspath(path.join(src, item))
         dist_item = path.join(dist, item)
         if path.islink(dist_item):
             os.unlink(dist_item)

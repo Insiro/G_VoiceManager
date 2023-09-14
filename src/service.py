@@ -164,7 +164,7 @@ class ModService:
     # Step 4 : Apply Mod
     def apply(self, mod_name):
         print(self._config.sym_path)
-        if not self.validSymlink:
+        if not self.validSymlink() and path.exists(self._config.sym_path):
             raise NotValidSymLinkException()
         mod_path = path.join(self._config.packed_mods_path, mod_name)
         if not path.isdir(mod_path):

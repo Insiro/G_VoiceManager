@@ -76,18 +76,19 @@ class ModTool:
                 lambda file: file.startswith("External")
                 and not path.exists(path.join(mod_path, file)),
             )
-        os.unlink(self.config.sym_path)
-        os.symlink(mod_path, self.config.sym_path)
+        if path.islink(self.config.sym_path):
+            os.unlink(self.config.sym_path)
         link_contents(
             lang_backup_path,
             mod_path,
             "linking other files",
             lambda file: not path.exists(path.join(mod_path, file)),
         )
+        os.symlink(path.abspath(mod_path), self.config.sym_path)
 
     def restore(self, link=True):
         os.unlink(self.config.sym_path)
-        origin = path.join(self.config.backup_path, self.config.language)
+        origin = path.abspath(path.join(self.config.backup_path, self.config.language))
         sym = self.config.sym_path
 
         if link:
