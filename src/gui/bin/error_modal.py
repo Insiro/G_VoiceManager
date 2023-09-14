@@ -7,8 +7,8 @@ class ErrorModal(QDialog):
         return self._msg.text()
 
     @msg.setter
-    def msg(self, msg: str):
-        self._msg.setText(msg)
+    def msg(self, message: str):
+        self._msg.setText(message)
 
     def __init__(self, parent) -> None:
         super().__init__(parent)

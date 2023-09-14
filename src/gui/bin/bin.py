@@ -1,13 +1,15 @@
-from src.service import ModService
-from src.utils.error import ModManagerException
-from .process_overlay import ProcessOverlay
+from PyQt6.QtCore import pyqtSlot, QObject
 from PyQt6.QtWidgets import QWidget
-from PyQt6.QtCore import QThread, QEventLoop
-from typing import Callable
+
+from src.service import ModService
+
 from .error_modal import ErrorModal
+from .process_overlay import ProcessOverlay
+from .worker import Worker
+from typing import Callable, Any
 
 
-class Bin:
+class Bin(QObject):
     @property
     def service(self):
         return self.__service
@@ -25,44 +27,27 @@ class Bin:
         return self.__modal
 
     def __init__(self, root: QWidget, service: ModService) -> None:
+        super().__init__(root)
         self.__root = root
         self.__service = service
         self.__overlay = ProcessOverlay(root)
         self.__modal = ErrorModal(root)
-        pass
+        self.__worker = Worker(root)
 
-    def getWorker(self, work: Callable[[], None]):
-        return Worker(self, work)
+        # connect worker slot
+        self.__worker.fisnish.connect(self._finishWork)
+        self.__worker.error.connect(self._openErrorModal)
 
+    @pyqtSlot(str)
+    def _openErrorModal(self, msg: str):
+        self.__modal.msg = msg
+        self.__modal.show()
 
-class Worker(QThread):
-    def __init__(self, bin: Bin, work: Callable[[], None], fail_msg=None) -> None:
-        super().__init__(bin.root)
-        self.modal = bin.modal
-        self.__overlay = bin.process_overlay
-        self.work = work
-        self.fail_msg = fail_msg
+    @pyqtSlot()
+    def _finishWork(self):
+        self.__overlay.stop()
 
-    def run(self):
-        self.__overlay.disableParentDuringLoading(self)
-        self.__overlay.start()
-        try:
-            self.work()
-        except ModManagerException as e:
-            msg = e.get_msg if self.fail_msg is None else self.fail_msg
-            self._displayErrorModal(msg)
-
-        except Exception as e:
-            msg = "UnExpected Error : " + e.__class__.__name__
-            self._displayErrorModal(msg)
-            self.__overlay.stop()
-            exit()
-        finally:
-            self.__overlay.stop()
-
-    def _displayErrorModal(self, msg: str):
-        self.modal.msg = msg
-        self.modal.showNormal()
-        loop = QEventLoop()
-        self.modal.destroyed.connect(loop.quit)
-        loop.exec()  # wait ..
+    def threading(self, work: Callable[[], Any], fail_msg: str | None = None):
+        self.__worker.work = work
+        self.__worker.start()
+        self.__worker.fail_msg = fail_msg

@@ -62,15 +62,14 @@ class ProcessOverlay(QWidget):
         self.setGraphicsEffect(QGraphicsOpacityEffect(opacity=0.75))
         if self.dot_animation:
             self.__timer.start(500)
+        self.__parent.setEnabled(False)
 
     def stop(self):
         self.__loading_mv.stop()
         self.lower()
         self.__timer.stop()
         self.setVisible(False)
-
-    def disableParentDuringLoading(self, thread: QThread):
-        self.__parent.setEnabled(thread.isRunning())
+        self.__parent.setEnabled(True)
 
     def paintEvent(self, e):
         palette = QPalette()
