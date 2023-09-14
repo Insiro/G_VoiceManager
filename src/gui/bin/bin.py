@@ -3,8 +3,7 @@ from PyQt6.QtWidgets import QWidget
 
 from src.service import ModService
 
-from .error_modal import ErrorModal
-from .process_overlay import ProcessOverlay
+from src.gui.components import ErrorModal, ProcessOverlay
 from .worker import Worker
 from typing import Callable, Any
 
