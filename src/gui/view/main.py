@@ -55,14 +55,15 @@ class MainView(ViewBase):
         return bg
 
     def backup(self):
-        worker = self._bin.getWorker(self._service.isolate_original)
-        worker.start()
+        self._bin.threading(
+            self._service.isolate_original,
+            "Voice Not Installed or Sym link is Activated",
+        )
 
     def restore(self):
         selected = self.restore_combo.currentText()
-        work = lambda: self.service.restore(selected == "link")
-        worker = self._bin.getWorker(work)
-        worker.start()
+        work = lambda: self._service.restore(selected == "link")
+        self._bin.threading(work)
 
     def apply(self):
         idx = self.mod_ComboBox.currentIndex()
@@ -70,8 +71,7 @@ class MainView(ViewBase):
             self.reloadMods()
             return
         mod_name = self.mod_ComboBox.currentText()
-        print(mod_name)
-        # self.service.apply(mod_name)
+        self._service.apply(mod_name)
 
     def reloadMods(self):
         self.mod_ComboBox.clear()
