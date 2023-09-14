@@ -1,3 +1,4 @@
+import typing
 from PyQt6.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -6,33 +7,30 @@ from PyQt6.QtWidgets import (
     QHBoxLayout,
     QComboBox,
 )
-from src.service import ModService
+from src.gui.bin import Bin
+from .view_base import ViewBase
 
 
-class MainView(QWidget):
+class MainView(ViewBase):
     mod_ComboBox: QComboBox
     restore_combo: QComboBox
 
-    def __init__(self, service: ModService):
-        super().__init__()
-        self.service = service
-        self.setLayout(self.init_content())
-
-    def init_content(self):
-        vbox = QVBoxLayout()
+    def __init__(self, bin: Bin):
+        super().__init__(bin)
         backup_btn = QPushButton("BackUp")
-        backup_btn.clicked.connect(self.service.isolate_original)
+        backup_btn.clicked.connect(self.backup)
 
-        vbox.addWidget(self.init_mod_group())
-        vbox.addWidget(self.init_restore_group())
+        vbox = QVBoxLayout()
+        vbox.addWidget(self.initModGroup())
+        vbox.addWidget(self.initRestoreGroup())
         vbox.addWidget(backup_btn)
-        return vbox
+        self.setLayout(vbox)
 
-    def init_mod_group(self):
+    def initModGroup(self):
         apply_btn = QPushButton("Apply")
         apply_btn.clicked.connect(self.apply)
         self.mod_ComboBox = QComboBox()
-        self.load_mods()
+        self.reloadMods()
         self.mod_ComboBox.setPlaceholderText("--Select Mod--")
         self.mod_ComboBox.setCurrentIndex(-1)
 
@@ -41,10 +39,9 @@ class MainView(QWidget):
         layout.addWidget(apply_btn)
         bg = QGroupBox("Apply Mod")
         bg.setLayout(layout)
-
         return bg
 
-    def init_restore_group(self):
+    def initRestoreGroup(self):
         restore_btn = QPushButton("restore")
         restore_btn.clicked.connect(self.restore)
         self.restore_combo = QComboBox()
@@ -57,21 +54,27 @@ class MainView(QWidget):
         bg.setLayout(layout)
         return bg
 
+    def backup(self):
+        worker = self._bin.getWorker(self._service.isolate_original)
+        worker.start()
+
     def restore(self):
         selected = self.restore_combo.currentText()
-        self.service.restore(selected == "link")
+        work = lambda: self.service.restore(selected == "link")
+        worker = self._bin.getWorker(work)
+        worker.start()
 
     def apply(self):
         idx = self.mod_ComboBox.currentIndex()
         if idx == 0:
-            self.load_mods()
+            self.reloadMods()
             return
         mod_name = self.mod_ComboBox.currentText()
         print(mod_name)
         # self.service.apply(mod_name)
 
-    def load_mods(self):
+    def reloadMods(self):
         self.mod_ComboBox.clear()
         self.mod_ComboBox.addItem("refresh list")
-        mod_list = self.service.get_applied_mods()
+        mod_list = self._service.get_applied_mods()
         self.mod_ComboBox.addItems(mod_list)

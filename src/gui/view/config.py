@@ -1,11 +1,11 @@
 from PyQt6 import QtWidgets
-from src.service import ModService
+from src.gui.bin import Bin
 
 
 class ConfigView(QtWidgets.QWidget):
-    def __init__(self, service: ModService):
+    def __init__(self, bin: Bin):
         super().__init__()
-        self.service = service
+        self.service = bin.service
 
         self.canvas = None
         self.list_view = None

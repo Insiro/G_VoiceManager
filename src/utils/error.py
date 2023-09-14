@@ -15,6 +15,9 @@ class ModManagerException(Exception):
         print(traceback.format_exc())
         print(self._msg)
 
+    def trace_str(self):
+        return traceback.format_exc()
+
 
 class NotValidDirException(ModManagerException):
     _msg = "Not Valid Directory"

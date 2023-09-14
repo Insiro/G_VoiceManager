@@ -1,9 +1,10 @@
 from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import QWidget, QTabWidget, QVBoxLayout, QWidget
+from src.gui.bin import Bin
 from src.gui.view import ModView, MainView, ConfigView
-from src.gui.view.process_overlay import ProcessOverlay
+
+
 from src.service import ModService
-from qt_material import apply_stylesheet
 
 
 class MyApp(QWidget):
@@ -17,8 +18,7 @@ class MyApp(QWidget):
 
     def __init__(self, service: ModService):
         super().__init__()
-        self.service = service
-        self.__overlay = ProcessOverlay(self)
+        self.__bin = Bin(self, service)
         layout = QVBoxLayout()
         layout.addWidget(self.init_header())
         layout.addWidget(self.init_tab())
@@ -32,9 +32,9 @@ class MyApp(QWidget):
     def init_tab(self):
         subPage = QWidget()
         tab = QTabWidget(subPage)
-        tab.addTab(MainView(self.service, self.show_process), "Home")
-        tab.addTab(ModView(self.service, self.show_process), "Mod Manage")
-        tab.addTab(ConfigView(self.service), "Config")
+        tab.addTab(MainView(self.__bin), "Home")
+        tab.addTab(ModView(self.__bin), "Mod Manage")
+        tab.addTab(ConfigView(self.__bin), "Config")
         subPage.setMinimumSize(tab.sizeHint())
         return subPage
 
@@ -46,9 +46,10 @@ def showDialog(base_dir):
 
 
 import sys
+from qt_material import apply_stylesheet
 
 
-def start_gui(argv, service):
+def start_gui(argv, service: ModService):
     app = QtWidgets.QApplication(argv)
     apply_stylesheet(app, theme="light_blue.xml")
     ex = MyApp(service)
