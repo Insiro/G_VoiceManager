@@ -47,9 +47,6 @@ class SelectSources(QGroupBox):
         self.mod_sources = self._service.get_mod_sources()
         self._source_list.clear()
 
-        self._source_list.addItem("1")
-        self._source_list.addItem("1")
-        self._source_list.addItem("1")
         for source in self.mod_sources:
             item = QListWidgetItem(source)
             self._source_list.addItem(item)
@@ -110,22 +107,26 @@ class ModView(QWidget):
         self._edit_mod_name = QLineEdit()
         self._edit_mod_name.setPlaceholderText("input new mod name")
         pack_btn = QPushButton("Pack Mod")
-        pack_btn.clicked.connect(self._pack)
+
+        pack_btn.clicked.connect(
+            lambda: self.bin.threading(self._pack, "failed to Packing")
+        )
         layout.addWidget(self._edit_mod_name)
         layout.addWidget(pack_btn)
 
         return layout
 
     def _pack(self):
-        return
         self._service.clear_source()
         if (selected := self.select_base.selected) == "BackUp":
             self._service.reset_base()
         else:
             self._service.select_base_mod(selected)
         for source in self.source_list.selectedItem:
+            self.bin.process_overlay.desc_text = f"preparing {source}"
             self._service.prepare_mod_source(source)
-        self._pack()
+        self.bin.process_overlay.desc_text = "packing mod"
+        self._service.pack_mod(self._edit_mod_name.text())
         self._service.clear_source()
         pass
 

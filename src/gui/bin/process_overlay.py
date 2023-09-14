@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QGraphicsOpacityEffect,
 )
-from PyQt6.QtCore import QSize, Qt, QThread, QTimer
+from PyQt6.QtCore import QSize, Qt, QTimer
 from PyQt6.QtGui import QMovie, QPalette, QColor
 
 

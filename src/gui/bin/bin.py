@@ -49,5 +49,6 @@ class Bin(QObject):
 
     def threading(self, work: Callable[[], Any], fail_msg: str | None = None):
         self.__worker.work = work
+        self.__overlay.start()
         self.__worker.start()
         self.__worker.fail_msg = fail_msg

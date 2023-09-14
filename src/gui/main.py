@@ -35,6 +35,7 @@ class MyApp(QWidget):
         tab.addTab(MainView(self.__bin), "Home")
         tab.addTab(ModView(self.__bin), "Mod Manage")
         tab.addTab(ConfigView(self.__bin), "Config")
+        tab.currentChanged.connect(lambda x: tab.currentWidget().reset())
         subPage.setMinimumSize(tab.sizeHint())
         return subPage
 

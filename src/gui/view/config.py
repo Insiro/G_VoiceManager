@@ -1,18 +1,11 @@
 from PyQt6 import QtWidgets
 from src.gui.bin import Bin
+from .view_base import ViewBase
 
 
-class ConfigView(QtWidgets.QWidget):
+class ConfigView(ViewBase):
     def __init__(self, bin: Bin):
-        super().__init__()
-        self.service = bin.service
-
-        self.canvas = None
-        self.list_view = None
-        self.image_label = None
-        self.setLayout(self.content())
-
-    def content(self):
+        super().__init__(bin)
         vbox = QtWidgets.QVBoxLayout()
         self.list_view = QtWidgets.QListWidget()
         self.list_view.setSizePolicy(
@@ -23,4 +16,4 @@ class ConfigView(QtWidgets.QWidget):
         self.list_view.addItems(
             ["Select Base Mod", "add Mod Source", "Clear Inputs", "Pack Mod"]
         )
-        return vbox
+        self.setLayout(vbox)

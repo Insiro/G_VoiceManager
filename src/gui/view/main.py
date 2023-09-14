@@ -78,3 +78,7 @@ class MainView(ViewBase):
         self.mod_ComboBox.addItem("refresh list")
         mod_list = self._service.get_applied_mods()
         self.mod_ComboBox.addItems(mod_list)
+
+    def reset(self):
+        self.mod_ComboBox.setCurrentIndex(-1)
+        self.restore_combo.setCurrentIndex(0)
