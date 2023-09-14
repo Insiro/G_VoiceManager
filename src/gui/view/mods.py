@@ -109,7 +109,11 @@ class ModView(QWidget):
         pack_btn = QPushButton("Pack Mod")
 
         pack_btn.clicked.connect(
-            lambda: self.bin.threading(self._pack, "failed to Packing")
+            lambda: self.bin.threading(
+                self._pack,
+                f"{self._edit_mod_name.text()} successfully Generated"
+                "failed to Packing",
+            )
         )
         layout.addWidget(self._edit_mod_name)
         layout.addWidget(pack_btn)

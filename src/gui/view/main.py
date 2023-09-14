@@ -57,13 +57,14 @@ class MainView(ViewBase):
     def backup(self):
         self._bin.threading(
             self._service.isolate_original,
+            "BackUp Finished",
             "Voice Not Installed or Sym link is Activated",
         )
 
     def restore(self):
         selected = self.restore_combo.currentText()
         work = lambda: self._service.restore(selected == "link")
-        self._bin.threading(work)
+        self._bin.threading(work, "Restore Success", "Restore Failed")
 
     def apply(self):
         idx = self.mod_ComboBox.currentIndex()
