@@ -23,14 +23,15 @@ pip3 install -r requirement.txt
 
 ### configuration
 
-| name          | desc                                                                                       |
-| ------------- | ------------------------------------------------------------------------------------------ |
-| temp path     | Path for Temprary file save                                                                |
-| resource path | Path for Save Resource files like `Generated Sound File`                                   |
-| genshin path  | Genshin GameData Path                                                                      |
-| mods path     | Mod Source folders saved path                                                              |
-| backup path   | Path for Original Sound File will saved, **Recommand to Set same drive with Genshin Path** |
-| language      | Language for apply mod                                                                     |
+| name             | desc                                                                                       |
+| ---------------- | ------------------------------------------------------------------------------------------ |
+| temp path        | Path for Temprary file save                                                                |
+| resource path    | Path for Save Resource files like `Generated Sound File`                                   |
+| genshin path     | Genshin GameData Path                                                                      |
+| mods source path | Mod Source folders saved path                                                              |
+| backup path      | Path for Original Sound File will saved, **Recommand to Set same drive with Genshin Path** |
+| voice_lang       | Voice Language for apply mod                                                               |
+| locale           | display locale, Currently support code are [`en`, `kr`]                                    |
 
 <details><summary>Json Example</summary>
     
@@ -39,9 +40,10 @@ pip3 install -r requirement.txt
     "temp_path": "C:\\temp",
     "resource_path": "..\\resources",
     "genshin_path": "C:\\Program Files\\Genshin Impact\\Genshin Impact game",
-    "mods_path": "..\\resources\\mods",
+    "mod_sources_path": "..\\resources\\mods",
+    "voice_lang": "Japanese",
     "backup_path": "..\\resources\\backup",
-    "language": "Korean"
+    "locale": "en"
 }
 ```
     
