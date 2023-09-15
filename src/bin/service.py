@@ -99,7 +99,28 @@ class ModService:
     def configString(self) -> str:
         return self._config.dump()
 
+    @property
+    def exist_voice(self) -> bool:
+        return path.exists(self._config.sym_path)
+
+    @property
+    def is_activated_original_and_link(self) -> int:
+        """
+        @return : 0: not original, 1: link, 2: original
+        """
+        if not path.islink(self._config.sym_path):
+            return 2
+        if (
+            path.abspath(os.readlink(self._config.sym_path)).split("\\\\?\\")[-1]
+            == self._config.backup_path
+        ):
+            return 1
+        return 0
+
     # endregion
+    @property
+    def current_mod(self) -> str:
+        return path.basename(os.readlink(self._config.sym_path))
 
     def get_applied_mods(self) -> list[str]:
         items = os.listdir(self._config.packed_mods_path)

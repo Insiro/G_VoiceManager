@@ -24,14 +24,10 @@ class MyApp(QWidget):
         bin.connectApp(self)
         self.__locale = self.__bin.locale
         layout = QVBoxLayout()
-        layout.addWidget(self.init_header())
         layout.addWidget(self.init_tab())
         self.setLayout(layout)
         self.setWindowTitle("Genshin Voice Manager")
         self.show()
-
-    def init_header(self):
-        return QtWidgets.QLabel("header area")
 
     def init_tab(self):
         subPage = QWidget()

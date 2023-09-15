@@ -1,7 +1,42 @@
-from PyQt6.QtWidgets import QComboBox, QGroupBox, QHBoxLayout, QPushButton, QVBoxLayout
-
+from PyQt6.QtWidgets import (
+    QComboBox,
+    QGroupBox,
+    QHBoxLayout,
+    QPushButton,
+    QVBoxLayout,
+    QLabel,
+)
 from ..bin import GuiBin
 from .view_base import ViewBase
+
+
+class Header(QGroupBox):
+    def __init__(self, bin: GuiBin):
+        super().__init__()
+        self._bin = bin
+        self._service = bin.service
+        self._locale = bin.locale["main"]
+        self._state = QLabel()
+        layout = QHBoxLayout()
+        layout.addWidget(QLabel("Mod State"))
+        layout.addWidget(self._state)
+        self.setLayout(layout)
+        self.updateState()
+
+    def updateState(self):
+        if not self._service.exist_voice:
+            self._state.setText(self._locale["removed"])
+            return
+        if act := self._service.is_activated_original_and_link:
+            self._state.setText(
+                f"{self._locale['origianl']} "
+                + f"{self._locale['link']} {self._locale['activated']}"
+                if act == 1
+                else self._locale["no_backup"]
+            )
+
+            return
+        self._state.setText(self._service.current_mod + f" {self._locale['activated']}")
 
 
 class MainView(ViewBase):
@@ -14,6 +49,9 @@ class MainView(ViewBase):
         backup_btn.clicked.connect(self.backup)
 
         vbox = QVBoxLayout()
+        self.header = Header(self._bin)
+        vbox.addWidget(self.header)
+
         vbox.addWidget(self.initModGroup())
         vbox.addWidget(self.initRestoreGroup())
         vbox.addWidget(backup_btn)
@@ -79,5 +117,6 @@ class MainView(ViewBase):
         self.mod_ComboBox.addItems(mod_list)
 
     def reset(self):
+        self.header.updateState()
         self.mod_ComboBox.setCurrentIndex(-1)
         self.restore_combo.setCurrentIndex(0)

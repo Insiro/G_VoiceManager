@@ -44,6 +44,10 @@ class MainLocale(TypedDict):
     link: str
     move: str
     backup: str
+    removed: str
+    activated: str
+    no_backup: str
+    original: str
 
 
 class Locale(TypedDict):

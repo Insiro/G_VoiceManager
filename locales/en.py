@@ -20,6 +20,10 @@ main_locale = MainLocale(
     link="symlink mod",
     move="move mod",
     backup="Backup",
+    original="Original",
+    removed="Original Removed",
+    activated="Activated",
+    no_backup="Backup Disabled",
 )
 
 alert_locale = AlertLocale(

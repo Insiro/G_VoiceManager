@@ -20,6 +20,10 @@ main_locale = MainLocale(
     link="symlink 방식",
     move="이동 방식",
     backup="백업",
+    original="원본",
+    removed="원본을 찾을수 없음",
+    activated="활성화 됨",
+    no_backup="백업 해제 됨",
 )
 tab_locale = TabLocale(home="메인", gen_mod="모드 생성", config="설정")
 
