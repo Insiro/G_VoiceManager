@@ -19,6 +19,7 @@ class MyApp(QWidget):
     def __init__(self, service: ModService):
         super().__init__()
         self.__bin = Bin(self, service)
+        self.__locale = self.__bin.locale
         layout = QVBoxLayout()
         layout.addWidget(self.init_header())
         layout.addWidget(self.init_tab())
@@ -32,9 +33,9 @@ class MyApp(QWidget):
     def init_tab(self):
         subPage = QWidget()
         tab = QTabWidget(subPage)
-        tab.addTab(MainView(self.__bin), "Home")
-        tab.addTab(ModView(self.__bin), "Mod Manage")
-        tab.addTab(ConfigView(self.__bin), "Config")
+        tab.addTab(MainView(self.__bin), self.__locale["tab"]["home"])
+        tab.addTab(ModView(self.__bin), self.__locale["tab"]["gen_mod"])
+        tab.addTab(ConfigView(self.__bin), self.__locale["tab"]["config"])
         tab.currentChanged.connect(lambda x: tab.currentWidget().reset())
         subPage.setMinimumSize(tab.sizeHint())
         return subPage

@@ -6,13 +6,13 @@ from PyQt6.QtWidgets import (
     QPushButton,
     QSizePolicy,
     QVBoxLayout,
-    QWidget,
     QLabel,
     QListWidgetItem,
     QAbstractItemView,
     QLineEdit,
 )
 from src.gui.bin import Bin
+from .view_base import ViewBase
 
 
 class SelectSources(QGroupBox):
@@ -22,7 +22,8 @@ class SelectSources(QGroupBox):
 
     def __init__(self, bin: Bin) -> None:
         super().__init__()
-        self.setTitle("Select Mod Sources")
+        self._locale = bin.locale
+        self.setTitle(self._locale["mods"]["source_select"])
         self._service = bin.service
 
         self._source_list = QListWidget()
@@ -34,7 +35,7 @@ class SelectSources(QGroupBox):
             QSizePolicy.Policy.Expanding,
         )
 
-        refresh_btn = QPushButton("Refresh")
+        refresh_btn = QPushButton(self._locale["refresh"])
         refresh_btn.clicked.connect(self._refresh_mod_list)
 
         layout = QVBoxLayout()
@@ -58,16 +59,17 @@ class SelectSources(QGroupBox):
 class SelectBaseMod(QHBoxLayout):
     def __init__(self, bin: Bin):
         super().__init__()
+        self._locale = bin.locale
         self._service = bin.service
         self._base_combo = QComboBox()
         self._base_combo.activated.connect(
             lambda: self._refresh_mods()
-            if self._base_combo.currentText() == "Refresh"
+            if self._base_combo.currentText() == self._locale["refresh"]
             else None
         )
         self._refresh_mods()
 
-        self.addWidget(QLabel("Mod Base"))
+        self.addWidget(QLabel(self._locale["mods"]["mod_base"]))
         self.addWidget(self._base_combo)
 
     @property
@@ -76,7 +78,7 @@ class SelectBaseMod(QHBoxLayout):
 
     def _refresh_mods(self):
         self._base_combo.clear()
-        self._base_combo.addItem("Refresh")
+        self._base_combo.addItem(self._locale["refresh"])
         self._base_combo.addItem("BackUp")
         self._base_combo.addItems(self._service.get_applied_mods())
         self._base_combo.setCurrentIndex(1)
@@ -85,13 +87,11 @@ class SelectBaseMod(QHBoxLayout):
         self._base_combo.setCurrentIndex(1)
 
 
-class ModView(QWidget):
+class ModView(ViewBase):
     _edit_mod_name: QLineEdit
 
     def __init__(self, bin: Bin):
-        super().__init__()
-        self.bin = bin
-        self._service = bin.service
+        super().__init__(bin)
 
         self.source_list = SelectSources(bin)
         self.select_base = SelectBaseMod(bin)
@@ -105,14 +105,14 @@ class ModView(QWidget):
     def init_pack(self):
         layout = QHBoxLayout()
         self._edit_mod_name = QLineEdit()
-        self._edit_mod_name.setPlaceholderText("input new mod name")
-        pack_btn = QPushButton("Pack Mod")
+        self._edit_mod_name.setPlaceholderText(self._locale["mods"]["input_mod_name"])
+        pack_btn = QPushButton(self._locale["mods"]["pack"])
 
         pack_btn.clicked.connect(
             lambda: self.bin.threading(
                 self._pack,
-                f"{self._edit_mod_name.text()} successfully Generated"
-                "failed to Packing",
+                self._edit_mod_name.text() + " " + self._locale["mods"]["gen_success"],
+                self._locale["mods"]["pack_failed"],
             )
         )
         layout.addWidget(self._edit_mod_name)
@@ -127,10 +127,15 @@ class ModView(QWidget):
         else:
             self._service.select_base_mod(selected)
         for source in self.source_list.selectedItem:
-            self.bin.process_overlay.desc_text = f"preparing {source}"
+            self.bin.process_overlay.desc_text = (
+                f"{source} {self._locale['mods']['preparing']}"
+            )
             self._service.prepare_mod_source(source)
-        self.bin.process_overlay.desc_text = "packing mod"
-        self._service.pack_mod(self._edit_mod_name.text())
+        mod_name = self._edit_mod_name.text()
+        self.bin.process_overlay.desc_text = (
+            f"{mod_name} {self._locale['mods']['packing']}"
+        )
+        self._service.pack_mod(mod_name)
         self._service.clear_source()
         pass
 

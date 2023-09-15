@@ -14,4 +14,3 @@ class ViewBase(QWidget):
     @abstractmethod
     def reset(self):
         raise NotImplementedError()
-        pass

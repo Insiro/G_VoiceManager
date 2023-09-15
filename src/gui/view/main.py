@@ -43,7 +43,9 @@ class MainView(ViewBase):
         restore_btn = QPushButton(self._locale["main"]["restore"])
         restore_btn.clicked.connect(self.restore)
         self.restore_combo = QComboBox()
-        self.restore_combo.addItems(["link", "move"])
+        self.restore_combo.addItems(
+            [self._locale["main"]["link"], self._locale["main"]["move"]]
+        )
 
         layout = QHBoxLayout()
         layout.addWidget(self.restore_combo)
@@ -55,13 +57,13 @@ class MainView(ViewBase):
     def backup(self):
         self._bin.threading(
             self._service.isolate_original,
-            "BackUp Finished",
+            f"{self._locale['main']['backup']} {self._locale['success']}",
             self._locale["main"]["backup_fail"],
         )
 
     def restore(self):
         selected = self.restore_combo.currentText()
-        work = lambda: self._service.restore(selected == "link")
+        work = lambda: self._service.restore(selected == self._locale["main"]["link"])
         self._bin.threading(
             work,
             self._locale["main"]["restore"] + " " + self._locale["success"],
@@ -69,8 +71,7 @@ class MainView(ViewBase):
         )
 
     def apply(self):
-        idx = self.mod_ComboBox.currentIndex()
-        if idx == 0:
+        if 0 == self.mod_ComboBox.currentIndex():
             self.reloadMods()
             return
         mod_name = self.mod_ComboBox.currentText()

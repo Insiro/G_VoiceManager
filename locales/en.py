@@ -1,12 +1,15 @@
-from .abs_locale import Locale, MainLocale, ModsLocale
+from .abs_locale import *
 
 
 mod_locale = ModsLocale(
-    select_mod_source="Select Mod Source",
+    source_select="Select Mod Source",
     mod_base="Mod Base",
     input_mod_name="New Mod Name",
-    generate_success="successfully Generated",
+    gen_success="successfully Generated",
     pack_failed="Faild To Packing mod",
+    pack="Pack Mod",
+    packing="packing",
+    preparing="preparing",
 )
 
 main_locale = MainLocale(
@@ -14,9 +17,13 @@ main_locale = MainLocale(
     select_mod="--Select Mod--",
     backup_fail="Voice Not Installed or Already Backuped",
     apply_mod="Apply Mod",
+    link="symlink mod",
+    move="move mod",
+    backup="Backup",
 )
-
+tab_locale = TabLocale(home="home", gen_mod="Mod Generate", config="config")
 locale_map = Locale(
+    tab=tab_locale,
     mods=mod_locale,
     main=main_locale,
     refresh="Refresh",
