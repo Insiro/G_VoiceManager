@@ -28,9 +28,11 @@ class GPathFix(QWidget):
 
     def onclick(self):
         gpath = self.pselect.path
-        if path.isdir(path.json(gpath, assetSub)):
+        if path.isdir(path.join(gpath, assetSub)):
+            print(path.join(gpath, assetSub))
             self.bin.config.genshin_path = gpath
             self.bin.config.save()
             self.passed = True
+            self.close()
+            return
         self.modal.show()
-        pass
