@@ -1,5 +1,6 @@
 from PyQt6.QtCore import pyqtSlot, QObject
 from PyQt6.QtWidgets import QWidget
+from locales import locale
 
 from src.service import ModService
 
@@ -33,6 +34,7 @@ class Bin(QObject):
         self.__error_modal = ErrorModal(root)
         self.__modal = Modal(root)
         self.__worker = Worker(root)
+        self.locale = locale(service._config.lang)
 
         self.__worker.fisnish.connect(self._finishWork)
         self.__worker.error.connect(self._openErrorModal)

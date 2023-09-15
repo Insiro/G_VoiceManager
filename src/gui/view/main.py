@@ -1,6 +1,4 @@
-import typing
 from PyQt6.QtWidgets import (
-    QWidget,
     QVBoxLayout,
     QPushButton,
     QGroupBox,
@@ -27,22 +25,22 @@ class MainView(ViewBase):
         self.setLayout(vbox)
 
     def initModGroup(self):
-        apply_btn = QPushButton("Apply")
+        apply_btn = QPushButton(self._locale["apply"])
         apply_btn.clicked.connect(self.apply)
         self.mod_ComboBox = QComboBox()
         self.reloadMods()
-        self.mod_ComboBox.setPlaceholderText("--Select Mod--")
+        self.mod_ComboBox.setPlaceholderText(self._locale["main"]["select_mod"])
         self.mod_ComboBox.setCurrentIndex(-1)
 
         layout = QHBoxLayout()
         layout.addWidget(self.mod_ComboBox)
         layout.addWidget(apply_btn)
-        bg = QGroupBox("Apply Mod")
+        bg = QGroupBox(self._locale["main"]["apply_mod"])
         bg.setLayout(layout)
         return bg
 
     def initRestoreGroup(self):
-        restore_btn = QPushButton("restore")
+        restore_btn = QPushButton(self._locale["main"]["restore"])
         restore_btn.clicked.connect(self.restore)
         self.restore_combo = QComboBox()
         self.restore_combo.addItems(["link", "move"])
@@ -50,7 +48,7 @@ class MainView(ViewBase):
         layout = QHBoxLayout()
         layout.addWidget(self.restore_combo)
         layout.addWidget(restore_btn)
-        bg = QGroupBox("restore")
+        bg = QGroupBox(self._locale["main"]["restore"])
         bg.setLayout(layout)
         return bg
 
@@ -58,13 +56,17 @@ class MainView(ViewBase):
         self._bin.threading(
             self._service.isolate_original,
             "BackUp Finished",
-            "Voice Not Installed or Sym link is Activated",
+            self._locale["main"]["backup_fail"],
         )
 
     def restore(self):
         selected = self.restore_combo.currentText()
         work = lambda: self._service.restore(selected == "link")
-        self._bin.threading(work, "Restore Success", "Restore Failed")
+        self._bin.threading(
+            work,
+            self._locale["main"]["restore"] + " " + self._locale["success"],
+            self._locale["main"]["restore"] + " " + self._locale["failed"],
+        )
 
     def apply(self):
         idx = self.mod_ComboBox.currentIndex()
@@ -76,7 +78,7 @@ class MainView(ViewBase):
 
     def reloadMods(self):
         self.mod_ComboBox.clear()
-        self.mod_ComboBox.addItem("refresh list")
+        self.mod_ComboBox.addItem(self._locale["refresh"])
         mod_list = self._service.get_applied_mods()
         self.mod_ComboBox.addItems(mod_list)
 
