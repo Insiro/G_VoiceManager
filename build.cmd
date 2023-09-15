@@ -1,0 +1,1 @@
+pyinstaller -w -F .\main.py --name=GenshinVoiceManager --icon=.\assets\icon.ico

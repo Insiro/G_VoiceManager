@@ -1,8 +1,11 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
+from os import path
+
+from PyQt6.QtWidgets import QLabel, QPushButton, QVBoxLayout, QWidget
+
 from src.bin import assetSub
+
 from .bin import GuiBin
 from .components import HLabeldPath, Modal
-from os import path
 
 
 class GPathFix(QWidget):

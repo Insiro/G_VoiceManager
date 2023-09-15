@@ -1,13 +1,14 @@
 import sys
 
 from PyQt6 import QtWidgets
+from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QTabWidget, QVBoxLayout, QWidget
 from qt_material import apply_stylesheet
 
-from .bin import Config, GuiBin
-from .view import ConfigView, MainView, GenModView, ModView
 from .alert import Alert
+from .bin import Config, GuiBin
 from .g_path_fix import GPathFix
+from .view import ConfigView, GenModView, MainView, ModView
 
 
 class MyApp(QWidget):
@@ -28,6 +29,7 @@ class MyApp(QWidget):
         layout.addWidget(self.init_tab())
         self.setLayout(layout)
         self.setWindowTitle("Genshin Voice Manager")
+        self.setWindowIcon(QIcon(".\\assets\icon.ico"))
         self.show()
 
     def init_tab(self):
