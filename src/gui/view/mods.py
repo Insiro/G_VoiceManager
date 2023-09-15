@@ -94,7 +94,7 @@ class ModView(ViewBase):
         self.select_base = SelectBaseMod(bin)
 
         layout = QVBoxLayout()
-        layout.addLayout(self.select_base)
+        layout.addWidget(self.select_base)
         layout.addWidget(self.source_list)
         layout.addLayout(self.init_pack())
         self.setLayout(layout)
