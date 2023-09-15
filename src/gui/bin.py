@@ -55,6 +55,7 @@ class GuiBin(QObject):
 
     @pyqtSlot(str)
     def _openErrorModal(self, msg: str):
+        self.__overlay.stop()
         self.__error_modal.msg = msg
         self.__error_modal.show()
 
