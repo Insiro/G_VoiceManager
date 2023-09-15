@@ -14,6 +14,7 @@ class ConfigData:
     voice_lang: str
     backup_path: str
     locale: str
+    hide: bool
 
     def __init__(self, data: ConfigData | None = None) -> None:
         if data is not None:
@@ -33,6 +34,7 @@ class ConfigData:
         voice_lang: str,
         backup_path: str,
         locale: str,
+        hide: bool = False,
     ):
         ins = cls()
         ins.temp_path = temp_path
@@ -42,6 +44,7 @@ class ConfigData:
         ins.voice_lang = voice_lang
         ins.backup_path = backup_path
         ins.locale = locale
+        ins.hide = hide
         return ins
 
     def copyData(self, data: ConfigData):
@@ -52,6 +55,7 @@ class ConfigData:
         self.voice_lang = data.voice_lang
         self.backup_path = data.backup_path
         self.locale = data.locale
+        self.hide = data.hide
         return self
 
     def dict(self):

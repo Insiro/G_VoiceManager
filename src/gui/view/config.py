@@ -16,19 +16,23 @@ from .view_base import ViewBase
 
 class ConfigView(ViewBase):
     locale: HLabeldCombo
+    voice: HLabeldCombo
 
     def __init__(self, bin: GuiBin, parent: QWidget | None = None):
         ViewBase.__init__(self, bin=bin, parent=parent)
         self._conf = bin.conf_service
 
         self._layout = QVBoxLayout()
+        self.setLayout(self._layout)
         self.locale = HLabeldCombo("Locale", [item.value for item in Lang], self)
         self.locale.combo.setCurrentText(self._conf.locale)
         self._layout.addWidget(self.locale)
-        self.voice = HLabeldCombo("Voice", self._conf.voice_list, self)
+        try:
+            self.voice = HLabeldCombo("Voice", self._conf.voice_list, self)
+        except:
+            self.voice = HLabeldCombo("Voice", [], self)
         self.voice.combo.setCurrentText(self._conf.voice_lang)
         self._layout.addWidget(self.voice)
-        self.setLayout(self._layout)
         self.init_path()
         self.init_bottom()
 

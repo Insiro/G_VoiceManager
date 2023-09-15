@@ -37,12 +37,12 @@ pip3 install -r requirement.txt
     
 ```json
 {
-    "temp_path": "C:\\temp",
-    "resource_path": "..\\resources",
+    "temp_path": ".\\temp",
+    "resource_path": ".\\resources",
     "genshin_path": "C:\\Program Files\\Genshin Impact\\Genshin Impact game",
-    "mod_sources_path": "..\\resources\\mods",
+    "mod_sources_path": ".\\resources\\mods",
     "voice_lang": "Japanese",
-    "backup_path": "..\\resources\\backup",
+    "backup_path": ".\\resources\\backup",
     "locale": "en"
 }
 ```
