@@ -42,8 +42,12 @@ setting_locale = SettingLocale(
     temp="Temp",
     backup="Backup",
 )
-tab_locale = TabLocale(home="home", gen_mod="Mod Generate", config="config")
+tab_locale = TabLocale(
+    home="home", gen_mod="Mod Generate", config="config", mod="Mod Manage"
+)
+mod_locale = ModLocale(delete="Delete")
 locale_map = Locale(
+    mod=mod_locale,
     tab=tab_locale,
     alert=alert_locale,
     setting=setting_locale,

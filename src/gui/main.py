@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import QTabWidget, QVBoxLayout, QWidget
 from qt_material import apply_stylesheet
 
 from .bin import Config, GuiBin
-from .view import ConfigView, MainView, GenModView
+from .view import ConfigView, MainView, GenModView, ModView
 from .alert import Alert
 
 
@@ -33,6 +33,7 @@ class MyApp(QWidget):
         subPage = QWidget()
         tab = QTabWidget(subPage)
         tab.addTab(MainView(self.__bin), self.__locale["tab"]["home"])
+        tab.addTab(ModView(self.__bin), self.__locale["tab"]["mod"])
         tab.addTab(GenModView(self.__bin), self.__locale["tab"]["gen_mod"])
         tab.addTab(ConfigView(self.__bin), self.__locale["tab"]["config"])
         tab.currentChanged.connect(lambda: tab.currentWidget().reset())

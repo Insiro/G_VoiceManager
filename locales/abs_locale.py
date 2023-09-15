@@ -1,10 +1,15 @@
 from typing import TypedDict
 
 
+class ModLocale(TypedDict):
+    delete: str
+
+
 class TabLocale(TypedDict):
     home: str
     gen_mod: str
     config: str
+    mod: str
 
 
 class GenModsLocale(TypedDict):
@@ -52,6 +57,7 @@ class MainLocale(TypedDict):
 
 class Locale(TypedDict):
     tab: TabLocale
+    mod: ModLocale
     genmods: GenModsLocale
     main: MainLocale
     alert: AlertLocale

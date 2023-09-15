@@ -6,6 +6,7 @@ from src.utils.error import *
 
 from .config import Config, ConfigData
 from .mod_tool import ModTool
+from shutil import rmtree
 
 
 class ConfigService(ConfigData):
@@ -185,6 +186,14 @@ class ModService:
         if not path.isdir(mod_path):
             raise ModNameNotValidException()
         self._tool.apply(mod_path)
+
+    def delete_mod(self, mod_name: str):
+        config = self._config
+        if self.current_mod == mod_name:
+            self.restore(True)
+            pass
+        mod_path = path.join(config.packed_mods_path, mod_name)
+        rmtree(mod_path)
 
     def restore(self, link=True):
         if not self.validSymlink:

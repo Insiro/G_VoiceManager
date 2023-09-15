@@ -25,7 +25,7 @@ main_locale = MainLocale(
     activated="활성화 됨",
     no_backup="백업 해제 됨",
 )
-tab_locale = TabLocale(home="메인", gen_mod="모드 생성", config="설정")
+tab_locale = TabLocale(home="메인", gen_mod="모드 생성", config="설정", mod="모드 관리")
 
 alert_locale = AlertLocale(
     responbility="본 소프트웨어를 사용함에 있어 생기는 문제에 대해 책임은 전적으로 사용자에게 있습니다",
@@ -43,9 +43,11 @@ setting_locale = SettingLocale(
     temp="Temp",
     backup="Backup",
 )
+mod_locale = ModLocale(delete="삭제")
 
 
 locale_map = Locale(
+    mod=mod_locale,
     setting=setting_locale,
     alert=alert_locale,
     tab=tab_locale,
