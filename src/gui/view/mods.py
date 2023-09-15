@@ -1,17 +1,18 @@
 from PyQt6.QtWidgets import (
+    QAbstractItemView,
     QComboBox,
     QGroupBox,
     QHBoxLayout,
+    QLabel,
+    QLineEdit,
     QListWidget,
+    QListWidgetItem,
     QPushButton,
     QSizePolicy,
     QVBoxLayout,
-    QLabel,
-    QListWidgetItem,
-    QAbstractItemView,
-    QLineEdit,
 )
-from src.bin import GuiBin
+
+from ..bin import GuiBin
 from .view_base import ViewBase
 
 

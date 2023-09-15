@@ -1,7 +1,11 @@
+import sys
+
 from PyQt6 import QtWidgets
-from PyQt6.QtWidgets import QWidget, QTabWidget, QVBoxLayout, QWidget
-from src.bin import GuiBin, Config
-from src.gui.view import ModView, MainView, ConfigView
+from PyQt6.QtWidgets import QTabWidget, QVBoxLayout, QWidget
+from qt_material import apply_stylesheet
+
+from .bin import Config, GuiBin
+from .view import ConfigView, MainView, ModView
 
 
 class MyApp(QWidget):
@@ -44,11 +48,7 @@ def showDialog(base_dir):
     )
 
 
-import sys
-from qt_material import apply_stylesheet
-
-
-def start_gui(argv, config: Config):
+def start(argv, config: Config):
     app = QtWidgets.QApplication(argv)
     apply_stylesheet(app, theme="light_blue.xml")
     ex = MyApp(config)

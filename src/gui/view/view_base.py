@@ -1,7 +1,8 @@
 from abc import abstractmethod
+
 from PyQt6.QtWidgets import QWidget
 
-from src.bin import GuiBin
+from ..bin import GuiBin
 
 
 class ViewBase(QWidget):

@@ -1,3 +1,3 @@
-from .error_modal import ErrorModal
+from .modal import ErrorModal, Modal
 from .process_overlay import ProcessOverlay
-from .modal import Modal
+from .worker import Worker

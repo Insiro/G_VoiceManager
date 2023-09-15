@@ -4,11 +4,9 @@ from PyQt6.QtCore import QObject, pyqtSlot
 from PyQt6.QtWidgets import QWidget
 
 from locales import locale
-from src.gui.components import ErrorModal, Modal, ProcessOverlay
+from src.bin import Bin, Config
 
-from ..bin import Bin
-from ..config import Config
-from .worker import Worker
+from ..gui.components import ErrorModal, Modal, ProcessOverlay, Worker
 
 
 class GuiBin(QObject):

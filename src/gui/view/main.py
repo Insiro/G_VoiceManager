@@ -1,11 +1,6 @@
-from PyQt6.QtWidgets import (
-    QVBoxLayout,
-    QPushButton,
-    QGroupBox,
-    QHBoxLayout,
-    QComboBox,
-)
-from src.bin import GuiBin
+from PyQt6.QtWidgets import QComboBox, QGroupBox, QHBoxLayout, QPushButton, QVBoxLayout
+
+from ..bin import GuiBin
 from .view_base import ViewBase
 
 

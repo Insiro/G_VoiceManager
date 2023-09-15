@@ -1,4 +1,4 @@
+from .bin import Bin
 from .cli_bin import CliBin
-from .gui import GuiBin
-from .service import ModService, ConfigService
 from .config import Config
+from .service import ConfigService, ModService
