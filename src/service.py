@@ -3,12 +3,7 @@ from os import path
 from src.config import Config
 from src.utils.dir import is_empty_dir
 
-from src.utils.error import (
-    ModNameNotValidException,
-    ModSourceNotReadyException,
-    NotValidDirException,
-    NotValidSymLinkException,
-)
+from src.utils.error import *
 
 from .mod_tool import ModTool
 
@@ -39,7 +34,8 @@ class ConfigService:
         self._conf.lang = self.lang
         self._conf.save()
 
-    def get_langList(self):
+    @property
+    def voice_list(self):
         items = os.listdir(self._conf.lang_list_path)
         langs = []
         for item in items:
@@ -91,17 +87,12 @@ class ModService:
         self._config = tool.config
         self._tool = tool
         self._selected_sources: list[str] = []
-        self._configService = ConfigService(self._config)
         self.updateSymLinkState()
 
     # region property
     @property
     def validSymlink(self) -> bool:
         return self._is_symlink_valid
-
-    @property
-    def configservice(self):
-        return self._configService
 
     @property
     def configString(self) -> str:
