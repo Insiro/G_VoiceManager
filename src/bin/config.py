@@ -10,6 +10,7 @@ class Config:
     voice_lang: str
     backup_path: str
     lang: str
+    _conf_path: str
 
     @staticmethod
     def __assign(
@@ -60,10 +61,13 @@ class Config:
         return sym
 
     @staticmethod
-    def load():
-        if path.isfile("config.json"):
-            with open("config.json", "r") as fp:
-                return Config.__assign(**json.load(fp))
+    def load(config_path: str | None = None):
+        conf_path = "config.json" if config_path is None else config_path
+        if path.isfile(conf_path):
+            with open(conf_path, "r") as fp:
+                conf = Config.__assign(**json.load(fp))
+                conf._conf_path = conf_path
+                return conf
 
         conf = Config.__assign(
             temp_path=".\\temp",
@@ -74,11 +78,13 @@ class Config:
             backup_path=".\\resources\\backup",
             lang="en",
         )
+        conf._conf_path = conf_path
+
         conf.save()
         return conf
 
     def save(self):
-        with open("config.json", "w") as fp:
+        with open(self._conf_path, "w") as fp:
             print(json.dump(self.__dict__, fp, indent=2))
 
     def dump(self) -> str:
