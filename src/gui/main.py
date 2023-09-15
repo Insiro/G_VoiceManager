@@ -42,12 +42,6 @@ class MyApp(QWidget):
         return subPage
 
 
-def showDialog(base_dir):
-    filename, _ = QtWidgets.QFileDialog.getExistingDirectory(
-        None, "Open folder", base_dir
-    )
-
-
 def start(argv, config: Config):
     app = QtWidgets.QApplication(argv)
     apply_stylesheet(app, theme="light_blue.xml")

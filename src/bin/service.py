@@ -4,12 +4,13 @@ from os import path
 from src.utils.dir import is_empty_dir
 from src.utils.error import *
 
-from .config import Config
+from .config import Config, ConfigData
 from .mod_tool import ModTool
 
 
-class ConfigService:
+class ConfigService(ConfigData):
     def __init__(self, config: Config) -> None:
+        super().__init__(config)
         self._conf = config
         self.reset()
 

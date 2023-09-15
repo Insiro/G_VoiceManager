@@ -4,7 +4,7 @@ from PyQt6.QtCore import QObject, pyqtSlot
 from PyQt6.QtWidgets import QWidget
 
 from locales import locale
-from src.bin import Bin, Config
+from src.bin import Bin, Config, ConfigService
 
 from ..gui.components import ErrorModal, Modal, ProcessOverlay, Worker
 
@@ -13,6 +13,10 @@ class GuiBin(QObject):
     @property
     def service(self):
         return self._bin.service
+
+    @property
+    def conf_service(self):
+        return self._conf_service
 
     @property
     def process_overlay(self):
@@ -26,6 +30,10 @@ class GuiBin(QObject):
     def modal(self):
         return self.__error_modal
 
+    @property
+    def config(self):
+        return self._config
+
     def __init__(self, root: QWidget, config: Config) -> None:
         super().__init__(root)
         self._bin = Bin(config)
@@ -34,7 +42,9 @@ class GuiBin(QObject):
         self.__error_modal = ErrorModal(root)
         self.__modal = Modal(root)
         self.__worker = Worker(root)
+        self._config = config
         self.locale = locale(config.lang)
+        self._conf_service = ConfigService(config)
 
         self.__worker.fisnish.connect(self._finishWork)
         self.__worker.error.connect(self._openErrorModal)

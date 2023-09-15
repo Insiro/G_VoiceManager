@@ -1,37 +1,61 @@
+from __future__ import annotations
 import json
 from os import path
+from typing import Self
 
 
-class Config:
+class ConfigData:
     temp_path: str
     resource_path: str
-    genshin_path: str  # Path to Genshin Path, audio path will replaced as Symbolic Link
-    mod_sources_path: str  # path to Origianl Mod Source Files Saved
+    # Path to Genshin Path, audio path will replaced as Symbolic Link
+    genshin_path: str
+    # path to Origianl Mod Source Files Saved
+    mod_sources_path: str
     voice_lang: str
     backup_path: str
     lang: str
-    _conf_path: str
 
-    @staticmethod
-    def __assign(
+    def __init__(self, data: ConfigData | None = None) -> None:
+        if data is not None:
+            self.copyData(data)
+
+    @classmethod
+    def fromData(cls, data: ConfigData) -> Self:
+        return cls().copyData(data)
+
+    @classmethod
+    def new(
+        cls,
         temp_path: str,
         resource_path: str,
         genshin_path: str,
         mod_sources_path: str,
-        backup_path: str,
         voice_lang: str,
+        backup_path: str,
         lang: str,
     ):
-        config = Config()
-        config.temp_path = temp_path
-        config.resource_path = resource_path
-        config.genshin_path = genshin_path
-        config.mod_sources_path = mod_sources_path
-        config.voice_lang = voice_lang
-        config.backup_path = backup_path
-        config.lang = lang
-        return config
+        ins = cls()
+        ins.temp_path = temp_path
+        ins.resource_path = resource_path
+        ins.genshin_path = genshin_path
+        ins.mod_sources_path = mod_sources_path
+        ins.voice_lang = voice_lang
+        ins.backup_path = backup_path
+        ins.lang = lang
+        return ins
 
+    def copyData(self, data: ConfigData):
+        self.temp_path = data.temp_path
+        self.resource_path = data.resource_path
+        self.genshin_path = data.genshin_path
+        self.mod_sources_path = data.mod_sources_path
+        self.voice_lang = data.voice_lang
+        self.backup_path = data.backup_path
+        self.lang = data.lang
+        return self
+
+
+class Config(ConfigData):
     @property
     def wem_path(self) -> str:
         return path.join(self.temp_path, "wem")
@@ -60,16 +84,16 @@ class Config:
         )
         return sym
 
-    @staticmethod
-    def load(config_path: str | None = None):
+    @classmethod
+    def load(cls, config_path: str | None = None):
         conf_path = "config.json" if config_path is None else config_path
         if path.isfile(conf_path):
             with open(conf_path, "r") as fp:
-                conf = Config.__assign(**json.load(fp))
+                conf = cls.new(**json.load(fp))
                 conf._conf_path = conf_path
                 return conf
 
-        conf = Config.__assign(
+        conf = cls.new(
             temp_path=".\\temp",
             mod_sources_path=".\\resources\\mods",
             resource_path=".\\resources",
