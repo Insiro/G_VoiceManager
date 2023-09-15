@@ -28,13 +28,13 @@ class ConfigData:
     @classmethod
     def new(
         cls,
-        temp_path: str,
-        resource_path: str,
-        genshin_path: str,
-        mod_sources_path: str,
-        voice_lang: str,
-        backup_path: str,
-        locale: str,
+        temp_path: str = ".\\temp",
+        resource_path: str = ".\\resources",
+        genshin_path: str = "C:\\Program Files\\Genshin Impact\\Genshin Impact game",
+        mod_sources_path: str = ".\\resources\\mods",
+        voice_lang: str = "Japanese",
+        backup_path: str = ".\\resources\\backup",
+        locale: str = "ko",
         hide: bool = False,
         theme="light_pink.xml",
         *args,
@@ -102,16 +102,7 @@ class Config(ConfigData):
                 conf._conf_path = conf_path
                 return conf
 
-        conf = cls.new(
-            temp_path=".\\temp",
-            mod_sources_path=".\\resources\\mods",
-            resource_path=".\\resources",
-            genshin_path="C:\\Program Files\\Genshin Impact\\Genshin Impact game",
-            voice_lang="Korean",
-            backup_path=".\\resources\\backup",
-            locale="en",
-            theme="light_pink.xml",
-        )
+        conf = cls.new()
         conf._conf_path = conf_path
 
         conf.save()
