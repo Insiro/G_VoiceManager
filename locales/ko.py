@@ -32,12 +32,14 @@ alert_locale = AlertLocale(
     hide="다시 열지 않기",
     argree="동의",
     cancel="닫기",
+    path="경로",
+    cannotFindVoice="원신 음성 폴더를 찾을 수 없습니다.",
 )
 setting_locale = SettingLocale(
     locale="Locale",
     voice="음성",
     path="경로설정",
-    genshin="원신(GenshinImpact.exe 있는 폴더)",
+    genshin="GenshinImpact.exe 폴더",
     source="모드 소스",
     resouece="Resourcaes",
     temp="Temp",
@@ -57,4 +59,7 @@ locale_map = Locale(
     apply="적용",
     success="성공",
     failed="실패",
+    wrong="오류",
+    selected="선택한",
+    save="저장",
 )

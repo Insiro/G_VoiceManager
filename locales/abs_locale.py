@@ -28,6 +28,8 @@ class AlertLocale(TypedDict):
     hide: str
     argree: str
     cancel: str
+    path: str
+    cannotFindVoice: str
 
 
 class SettingLocale(TypedDict):
@@ -66,3 +68,6 @@ class Locale(TypedDict):
     refresh: str
     success: str
     failed: str
+    wrong: str
+    selected: str
+    save: str

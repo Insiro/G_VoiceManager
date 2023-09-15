@@ -7,6 +7,7 @@ from qt_material import apply_stylesheet
 from .bin import Config, GuiBin
 from .view import ConfigView, MainView, GenModView, ModView
 from .alert import Alert
+from .g_path_fix import GPathFix
 
 
 class MyApp(QWidget):
@@ -50,6 +51,14 @@ def start(argv, config: Config):
         alert.show()
         alertApp.exec()
         if not alert.agree:
+            exit()
+    if not bin.service.valiDateGenshinDir:
+        mainApp = QtWidgets.QApplication(argv)
+        apply_stylesheet(mainApp, theme="light_blue.xml")
+        ex = GPathFix(bin)
+        ex.show()
+        mainApp.exec()
+        if not ex.passed:
             exit()
 
     mainApp = QtWidgets.QApplication(argv)

@@ -31,6 +31,8 @@ alert_locale = AlertLocale(
     hide="Do Not Open More",
     argree="Agree",
     cancel="Cancel",
+    path="Path",
+    cannotFindVoice="Cannot Find Voice Folder",
 )
 setting_locale = SettingLocale(
     locale="Locale",
@@ -57,4 +59,7 @@ locale_map = Locale(
     apply="Apply",
     success="Success",
     failed="Failed",
+    wrong="Wrong",
+    selected="Selected",
+    save="Save",
 )

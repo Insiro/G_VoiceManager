@@ -206,3 +206,7 @@ class ModService:
 
     def updateSymLinkState(self):
         self._is_symlink_valid = path.islink(self._config.sym_path)
+
+    @property
+    def valiDateGenshinDir(self) -> bool:
+        return path.isdir(self._config.lang_list_path)

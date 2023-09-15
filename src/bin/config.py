@@ -62,6 +62,9 @@ class ConfigData:
         return self.__dict__
 
 
+assetSub = "GenshinImpact_Data\\StreamingAssets\\AudioAssets"
+
+
 class Config(ConfigData):
     @property
     def wem_path(self) -> str:
@@ -77,18 +80,11 @@ class Config(ConfigData):
 
     @property
     def lang_list_path(self) -> str:
-        return path.join(
-            self.genshin_path,
-            "GenshinImpact_Data\\StreamingAssets\\AudioAssets",
-        )
+        return path.join(self.genshin_path, assetSub)
 
     @property
     def sym_path(self) -> str:
-        sym = path.join(
-            self.genshin_path,
-            "GenshinImpact_Data\\StreamingAssets\\AudioAssets",
-            self.voice_lang,
-        )
+        sym = path.join(self.genshin_path, assetSub, self.voice_lang)
         return sym
 
     @classmethod
