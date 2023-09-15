@@ -21,7 +21,7 @@ class ProcessOverlay(QWidget):
 
     def __initUi(self, description_text):
         self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents, True)
-        self.__loading_mv = QMovie("./resources/loading.gif")
+        self.__loading_mv = QMovie("./assets/loading.gif")
         self.__loading_mv.setScaledSize(QSize(45, 45))
         mv_label = QLabel(self.__parent)
         mv_label.setMovie(self.__loading_mv)

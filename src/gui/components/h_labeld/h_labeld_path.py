@@ -1,26 +1,19 @@
-from PyQt6.QtWidgets import QPushButton, QWidget, QLabel, QFileDialog, QLineEdit
+from PyQt6.QtWidgets import QWidget
 from .h_labeld_widget import HLabeldWidget
+from ..path_select import PathSelect
 
 
 class HLabeldPath(HLabeldWidget):
     @property
     def path(self):
-        return self._path.text()
+        return self._path.path
 
     @path.setter
     def path(self, path: str):
-        self._path.setText(path)
+        self._path.path = path
 
     def __init__(self, label: str, current: str = "", parent: QWidget | None = None):
         super().__init__(label, parent)
 
-        self._path = QLineEdit(current)
-        self.setProperty("class", "secondary")
-        dialog_btn = QPushButton("Select")
-        dialog_btn.clicked.connect(self.showDialog)
+        self._path = PathSelect(current, parent)
         self.addWidget(self._path)
-        self.addWidget(dialog_btn)
-
-    def showDialog(self):
-        dir = QFileDialog.getExistingDirectory(None, "Open folder", self._path.text())
-        self._path.setText(dir)
