@@ -49,13 +49,13 @@ class MainView(ViewBase):
         backup_btn.clicked.connect(self.backup)
 
         vbox = QVBoxLayout()
+        self.setLayout(vbox)
         self.header = Header(self._bin)
         vbox.addWidget(self.header)
 
         vbox.addWidget(self.initModGroup())
         vbox.addWidget(self.initRestoreGroup())
         vbox.addWidget(backup_btn)
-        self.setLayout(vbox)
 
     def initModGroup(self):
         apply_btn = QPushButton(self._locale["apply"])

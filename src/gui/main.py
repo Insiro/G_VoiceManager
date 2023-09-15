@@ -46,22 +46,22 @@ def start(argv, config: Config):
     bin = GuiBin(config)
     if not config.hide:
         alertApp = QtWidgets.QApplication(argv)
-        apply_stylesheet(alertApp, theme="light_blue.xml")
+        apply_stylesheet(alertApp, theme=config.theme, invert_secondary=True)
         alert = Alert(bin)
         alert.show()
         alertApp.exec()
         if not alert.agree:
             exit()
     if not bin.service.valiDateGenshinDir:
-        mainApp = QtWidgets.QApplication(argv)
-        apply_stylesheet(mainApp, theme="light_blue.xml")
+        gpfApp = QtWidgets.QApplication(argv)
+        apply_stylesheet(gpfApp, theme=config.theme, invert_secondary=True)
         ex = GPathFix(bin)
         ex.show()
-        mainApp.exec()
+        gpfApp.exec()
         if not ex.passed:
             exit()
 
     mainApp = QtWidgets.QApplication(argv)
-    apply_stylesheet(mainApp, theme="light_blue.xml")
+    apply_stylesheet(mainApp, theme=config.theme, invert_secondary=True)
     ex = MyApp(bin)
     sys.exit(mainApp.exec())

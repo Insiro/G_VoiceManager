@@ -15,6 +15,7 @@ class ConfigData:
     backup_path: str
     locale: str
     hide: bool
+    theme: str
 
     def __init__(self, data: ConfigData | None = None) -> None:
         if data is not None:
@@ -35,6 +36,9 @@ class ConfigData:
         backup_path: str,
         locale: str,
         hide: bool = False,
+        theme="light_pink.xml",
+        *args,
+        **kwargs,
     ):
         ins = cls()
         ins.temp_path = temp_path
@@ -45,6 +49,7 @@ class ConfigData:
         ins.backup_path = backup_path
         ins.locale = locale
         ins.hide = hide
+        ins.theme = theme
         return ins
 
     def copyData(self, data: ConfigData):
@@ -56,6 +61,7 @@ class ConfigData:
         self.backup_path = data.backup_path
         self.locale = data.locale
         self.hide = data.hide
+        self.theme = data.theme
         return self
 
     def dict(self):
@@ -104,6 +110,7 @@ class Config(ConfigData):
             voice_lang="Korean",
             backup_path=".\\resources\\backup",
             locale="en",
+            theme="light_pink.xml",
         )
         conf._conf_path = conf_path
 
