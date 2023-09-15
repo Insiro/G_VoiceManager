@@ -1,9 +1,8 @@
-from abc import ABCMeta, abstractmethod
-from src.bin import CliBin
-from time import sleep
 import os
+from abc import ABCMeta, abstractmethod
+from time import sleep
 
-from src.service import ModService
+from src.bin import CliBin, ModService
 
 CONTINUE = True
 BREAK = False

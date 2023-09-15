@@ -1,5 +1,5 @@
-from src.mod_tool import ModTool
-from src.service import ModService
+from .mod_tool import ModTool
+from .service import ModService
 
 
 class Bin:

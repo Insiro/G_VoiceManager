@@ -1,6 +1,6 @@
-from src.bin.bin import Bin
+from .bin import Bin
+from .service import ConfigService
 from src.config import Config
-from src.service import ConfigService
 
 
 class CliBin(Bin):

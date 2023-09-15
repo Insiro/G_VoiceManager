@@ -2,12 +2,12 @@ import os
 from os import path
 from shutil import rmtree, move
 
-from .repack.repack import repack
-from .config import Config
-from .utils.error import NotValidPathException
+from ..repack.repack import repack
+from ..config import Config
+from ..utils.error import NotValidPathException
 
 
-from .utils.dir import check_mkdirs, clear_dir, copy_contents, link_contents
+from ..utils.dir import check_mkdirs, clear_dir, copy_contents, link_contents
 
 
 class ModTool:
