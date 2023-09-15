@@ -1,8 +1,20 @@
-from src.bin import CliBin, Config
-from src.cli import MainCli
+import sys
+from argparse import ArgumentParser
 
-config = Config.load()
-bin = CliBin(config)
+from src.bin import Config
+
+parser = ArgumentParser()
+parser.add_argument("--cli", action="store_true", default=False)
+parser.add_argument("-c", "--config", default=None)
+
+args = parser.parse_args()
 
 
-MainCli.run(bin)
+if args.cli:
+    from src.cli import start
+
+
+else:
+    from src.gui import start
+
+start(sys.argv, Config.load(args.config))

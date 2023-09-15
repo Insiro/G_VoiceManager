@@ -1,3 +1,4 @@
+from src.bin.cli_bin import CliBin
 from src.utils.error import NotValidDirException
 from . import *
 
@@ -18,15 +19,15 @@ class MainCli(Cli):
             case 0:
                 return False
             case 1:
-                ConfigCli.run(self._service)
+                ConfigCli.run(self._bin)
             case 2:
                 self.__backup()
             case 3:
                 self.__apply_menu()
             case 4:
-                RestoreCli.run(self._service)
+                RestoreCli.run(self._bin)
             case 5:
-                GenerateCli.run(self._service)
+                GenerateCli.run(self._bin)
             # case _:
             # self.print_msg("wrong index selected")
         return CONTINUE
@@ -46,3 +47,7 @@ class MainCli(Cli):
             return
         self._service.apply(mod_name)
         self.print_msg(f"mod {mod_name} applied")
+
+
+def start(argv, config):
+    MainCli.run(CliBin(config))
