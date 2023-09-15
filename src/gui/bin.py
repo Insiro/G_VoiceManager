@@ -34,18 +34,22 @@ class GuiBin(QObject):
     def config(self):
         return self._config
 
-    def __init__(self, root: QWidget, config: Config) -> None:
-        super().__init__(root)
+    def __init__(self, config: Config, root: QWidget | None = None) -> None:
         self._bin = Bin(config)
+        self.__root = root
+        self._config = config
+        self.locale = locale(config.locale)
+        self._conf_service = ConfigService(config)
+
+    def connectApp(self, root: QWidget):
+        if self.__root is not None:
+            return
+        super().__init__(root)
         self.__root = root
         self.__overlay = ProcessOverlay(root)
         self.__error_modal = ErrorModal(root)
         self.__modal = Modal(root)
         self.__worker = Worker(root)
-        self._config = config
-        self.locale = locale(config.locale)
-        self._conf_service = ConfigService(config)
-
         self.__worker.fisnish.connect(self._finishWork)
         self.__worker.error.connect(self._openErrorModal)
 

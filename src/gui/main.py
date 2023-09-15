@@ -6,6 +6,7 @@ from qt_material import apply_stylesheet
 
 from .bin import Config, GuiBin
 from .view import ConfigView, MainView, ModView
+from .alert import Alert
 
 
 class MyApp(QWidget):
@@ -17,9 +18,10 @@ class MyApp(QWidget):
     def current(self):
         return self.side_bar.current
 
-    def __init__(self, config: Config):
+    def __init__(self, bin: GuiBin):
         super().__init__()
-        self.__bin = GuiBin(self, config)
+        self.__bin = bin
+        bin.connectApp(self)
         self.__locale = self.__bin.locale
         layout = QVBoxLayout()
         layout.addWidget(self.init_header())
@@ -37,13 +39,24 @@ class MyApp(QWidget):
         tab.addTab(MainView(self.__bin), self.__locale["tab"]["home"])
         tab.addTab(ModView(self.__bin), self.__locale["tab"]["gen_mod"])
         tab.addTab(ConfigView(self.__bin), self.__locale["tab"]["config"])
-        tab.currentChanged.connect(lambda x: tab.currentWidget().reset())
+        tab.currentChanged.connect(lambda: tab.currentWidget().reset())
         subPage.setMinimumSize(tab.sizeHint())
         return subPage
 
 
 def start(argv, config: Config):
-    app = QtWidgets.QApplication(argv)
-    apply_stylesheet(app, theme="light_blue.xml")
-    ex = MyApp(config)
-    sys.exit(app.exec())
+    if not config.hide:
+        alertApp = QtWidgets.QApplication(argv)
+        apply_stylesheet(alertApp, theme="light_blue.xml")
+        alert = Alert(config)
+        alert.show()
+        alertApp.exec()
+        if not alert.agree:
+            exit()
+
+    bin = GuiBin(config)
+
+    mainApp = QtWidgets.QApplication(argv)
+    apply_stylesheet(mainApp, theme="light_blue.xml")
+    ex = MyApp(bin)
+    sys.exit(mainApp.exec())
