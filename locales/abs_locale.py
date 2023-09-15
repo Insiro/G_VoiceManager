@@ -7,7 +7,7 @@ class TabLocale(TypedDict):
     config: str
 
 
-class ModsLocale(TypedDict):
+class GenModsLocale(TypedDict):
     source_select: str
     mod_base: str
     input_mod_name: str
@@ -52,7 +52,7 @@ class MainLocale(TypedDict):
 
 class Locale(TypedDict):
     tab: TabLocale
-    mods: ModsLocale
+    genmods: GenModsLocale
     main: MainLocale
     alert: AlertLocale
     setting: SettingLocale

@@ -1,7 +1,7 @@
 from .abs_locale import *
 
 
-mod_locale = ModsLocale(
+genmod_locale = GenModsLocale(
     source_select="적용할 모드 소스",
     mod_base="베이스 모드",
     input_mod_name="새 모드 이름",
@@ -49,7 +49,7 @@ locale_map = Locale(
     setting=setting_locale,
     alert=alert_locale,
     tab=tab_locale,
-    mods=mod_locale,
+    genmods=genmod_locale,
     main=main_locale,
     refresh="다시 불려오기",
     apply="적용",

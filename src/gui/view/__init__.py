@@ -1,3 +1,3 @@
 from .main import MainView
 from .config import ConfigView
-from .mods import ModView
+from .gen_mods import GenModView

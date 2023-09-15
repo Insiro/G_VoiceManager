@@ -1,7 +1,7 @@
 from .abs_locale import *
 
 
-mod_locale = ModsLocale(
+genmod_locale = GenModsLocale(
     source_select="Select Mod Source",
     mod_base="Mod Base",
     input_mod_name="New Mod Name",
@@ -47,7 +47,7 @@ locale_map = Locale(
     tab=tab_locale,
     alert=alert_locale,
     setting=setting_locale,
-    mods=mod_locale,
+    genmods=genmod_locale,
     main=main_locale,
     refresh="Refresh",
     apply="Apply",

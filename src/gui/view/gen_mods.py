@@ -24,7 +24,7 @@ class SelectSources(QGroupBox):
     def __init__(self, bin: GuiBin) -> None:
         super().__init__()
         self._locale = bin.locale
-        self.setTitle(self._locale["mods"]["source_select"])
+        self.setTitle(self._locale["genmods"]["source_select"])
         self._service = bin.service
 
         self._source_list = QListWidget()
@@ -61,7 +61,7 @@ class SelectBaseMod(HLabeldCombo):
     def __init__(self, bin: GuiBin):
         self._locale = bin.locale
         self._service = bin.service
-        super().__init__(self._locale["mods"]["mod_base"])
+        super().__init__(self._locale["genmods"]["mod_base"])
         self._combo.activated.connect(
             lambda: self._refresh_mods()
             if self._combo.currentText() == self._locale["refresh"]
@@ -84,7 +84,7 @@ class SelectBaseMod(HLabeldCombo):
         self._combo.setCurrentIndex(1)
 
 
-class ModView(ViewBase):
+class GenModView(ViewBase):
     _edit_mod_name: QLineEdit
 
     def __init__(self, bin: GuiBin):
@@ -102,14 +102,18 @@ class ModView(ViewBase):
     def init_pack(self):
         layout = QHBoxLayout()
         self._edit_mod_name = QLineEdit()
-        self._edit_mod_name.setPlaceholderText(self._locale["mods"]["input_mod_name"])
-        pack_btn = QPushButton(self._locale["mods"]["pack"])
+        self._edit_mod_name.setPlaceholderText(
+            self._locale["genmods"]["input_mod_name"]
+        )
+        pack_btn = QPushButton(self._locale["genmods"]["pack"])
 
         pack_btn.clicked.connect(
             lambda: self.bin.threading(
                 self._pack,
-                self._edit_mod_name.text() + " " + self._locale["mods"]["gen_success"],
-                self._locale["mods"]["pack_failed"],
+                self._edit_mod_name.text()
+                + " "
+                + self._locale["genmods"]["gen_success"],
+                self._locale["genmods"]["pack_failed"],
             )
         )
         layout.addWidget(self._edit_mod_name)
