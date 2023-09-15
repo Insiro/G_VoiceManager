@@ -1,4 +1,4 @@
-from .abs_locale import Locale, MainLocale, ModsLocale, TabLocale
+from .abs_locale import *
 
 
 mod_locale = ModsLocale(
@@ -22,7 +22,28 @@ main_locale = MainLocale(
     backup="백업",
 )
 tab_locale = TabLocale(home="메인", gen_mod="모드 생성", config="설정")
+
+alert_locale = AlertLocale(
+    responbility="본 소프트웨어를 사용함에 있어 생기는 문제에 대해 책임은 전적으로 사용자에게 있습니다",
+    hide="다시 열지 않기",
+    argree="동의",
+    cancel="닫기",
+)
+setting_locale = SettingLocale(
+    locale="Locale",
+    voice="음성",
+    path="경로설정",
+    genshin="원신(GenshinImpact.exe 있는 폴더)",
+    source="모드 소스",
+    resouece="Resourcaes",
+    temp="Temp",
+    backup="Backup",
+)
+
+
 locale_map = Locale(
+    setting=setting_locale,
+    alert=alert_locale,
     tab=tab_locale,
     mods=mod_locale,
     main=main_locale,

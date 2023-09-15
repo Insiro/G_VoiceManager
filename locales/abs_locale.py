@@ -18,6 +18,24 @@ class ModsLocale(TypedDict):
     preparing: str
 
 
+class AlertLocale(TypedDict):
+    responbility: str
+    hide: str
+    argree: str
+    cancel: str
+
+
+class SettingLocale(TypedDict):
+    locale: str
+    voice: str
+    path: str
+    genshin: str
+    source: str
+    resouece: str
+    temp: str
+    backup: str
+
+
 class MainLocale(TypedDict):
     restore: str
     select_mod: str
@@ -32,6 +50,8 @@ class Locale(TypedDict):
     tab: TabLocale
     mods: ModsLocale
     main: MainLocale
+    alert: AlertLocale
+    setting: SettingLocale
     apply: str
     refresh: str
     success: str

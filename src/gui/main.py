@@ -45,16 +45,15 @@ class MyApp(QWidget):
 
 
 def start(argv, config: Config):
+    bin = GuiBin(config)
     if not config.hide:
         alertApp = QtWidgets.QApplication(argv)
         apply_stylesheet(alertApp, theme="light_blue.xml")
-        alert = Alert(config)
+        alert = Alert(bin)
         alert.show()
         alertApp.exec()
         if not alert.agree:
             exit()
-
-    bin = GuiBin(config)
 
     mainApp = QtWidgets.QApplication(argv)
     apply_stylesheet(mainApp, theme="light_blue.xml")

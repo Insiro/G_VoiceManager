@@ -7,36 +7,28 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 from PyQt6.QtCore import Qt
-from .bin import Config
+from .bin import GuiBin
 
 
 class Alert(QWidget):
     dno: QCheckBox
 
-    def __init__(self, config: Config) -> None:
+    def __init__(self, bin: GuiBin) -> None:
         super().__init__()
         self.agree = False
-        self.config = config
+        self.config = bin.config
+        locale = bin.locale
         self._layout = QVBoxLayout()
         self.setLayout(self._layout)
-        self.dno = QCheckBox("Do Not Open More", self)
-        cancel_btn = QPushButton("cancel")
+        self.dno = QCheckBox(locale["alert"]["hide"], self)
+        cancel_btn = QPushButton(locale["alert"]["cancel"])
         cancel_btn.clicked.connect(self.cancel)
-        ok_btn = QPushButton("agree")
+        ok_btn = QPushButton(locale["alert"]["argree"])
         ok_btn.setProperty("class", "danger")
         ok_btn.clicked.connect(self.ok)
-
-        self._layout.addWidget(
-            QLabel(
-                "no responsible for any problems that arise from using this software."
-            )
-        )
-        self._layout.addWidget(
-            QLabel(
-                "Recomment to set backup dicectory on same disk where Game Data Saved"
-            )
-        )
-        self._layout.addWidget(QLabel("created by github.com/Insiro"))
+        self._layout.addWidget(QLabel(" "))
+        self._layout.addWidget(QLabel(locale["alert"]["responbility"]))
+        self._layout.addWidget(QLabel(" "))
 
         self._layout.addWidget(self.dno, alignment=Qt.AlignmentFlag.AlignRight)
         hbox = QHBoxLayout()

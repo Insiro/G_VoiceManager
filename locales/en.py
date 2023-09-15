@@ -21,9 +21,28 @@ main_locale = MainLocale(
     move="move mod",
     backup="Backup",
 )
+
+alert_locale = AlertLocale(
+    responbility="You are solely responsible for any problems that arise while using this software.",
+    hide="Do Not Open More",
+    argree="Agree",
+    cancel="Cancel",
+)
+setting_locale = SettingLocale(
+    locale="Locale",
+    voice="Voice",
+    path="Path",
+    genshin="Genshin Game",
+    source="Mod Sources",
+    resouece="Resourcaes",
+    temp="Temp",
+    backup="Backup",
+)
 tab_locale = TabLocale(home="home", gen_mod="Mod Generate", config="config")
 locale_map = Locale(
     tab=tab_locale,
+    alert=alert_locale,
+    setting=setting_locale,
     mods=mod_locale,
     main=main_locale,
     refresh="Refresh",
