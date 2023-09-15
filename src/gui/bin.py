@@ -43,7 +43,7 @@ class GuiBin(QObject):
         self.__modal = Modal(root)
         self.__worker = Worker(root)
         self._config = config
-        self.locale = locale(config.lang)
+        self.locale = locale(config.locale)
         self._conf_service = ConfigService(config)
 
         self.__worker.fisnish.connect(self._finishWork)

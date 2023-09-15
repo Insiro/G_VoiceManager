@@ -13,7 +13,7 @@ class ConfigData:
     mod_sources_path: str
     voice_lang: str
     backup_path: str
-    lang: str
+    locale: str
 
     def __init__(self, data: ConfigData | None = None) -> None:
         if data is not None:
@@ -32,7 +32,7 @@ class ConfigData:
         mod_sources_path: str,
         voice_lang: str,
         backup_path: str,
-        lang: str,
+        locale: str,
     ):
         ins = cls()
         ins.temp_path = temp_path
@@ -41,7 +41,7 @@ class ConfigData:
         ins.mod_sources_path = mod_sources_path
         ins.voice_lang = voice_lang
         ins.backup_path = backup_path
-        ins.lang = lang
+        ins.locale = locale
         return ins
 
     def copyData(self, data: ConfigData):
@@ -51,8 +51,11 @@ class ConfigData:
         self.mod_sources_path = data.mod_sources_path
         self.voice_lang = data.voice_lang
         self.backup_path = data.backup_path
-        self.lang = data.lang
+        self.locale = data.locale
         return self
+
+    def dict(self):
+        return self.__dict__
 
 
 class Config(ConfigData):
@@ -100,7 +103,7 @@ class Config(ConfigData):
             genshin_path="C:\\Program Files\\Genshin Impact\\Genshin Impact game",
             voice_lang="Korean",
             backup_path=".\\resources\\backup",
-            lang="en",
+            locale="en",
         )
         conf._conf_path = conf_path
 
@@ -109,7 +112,7 @@ class Config(ConfigData):
 
     def save(self):
         with open(self._conf_path, "w") as fp:
-            print(json.dump(self.__dict__, fp, indent=2))
+            json.dump(ConfigData(self).__dict__, fp, indent=2)
 
     def dump(self) -> str:
-        return json.dumps(self.__dict__, indent=2)
+        return json.dumps(ConfigData(self).__dict__, indent=2)
