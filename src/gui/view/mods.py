@@ -1,9 +1,7 @@
 from PyQt6.QtWidgets import (
     QAbstractItemView,
-    QComboBox,
     QGroupBox,
     QHBoxLayout,
-    QLabel,
     QLineEdit,
     QListWidget,
     QListWidgetItem,
@@ -11,6 +9,8 @@ from PyQt6.QtWidgets import (
     QSizePolicy,
     QVBoxLayout,
 )
+
+from src.gui.components import HLabeldCombo
 
 from ..bin import GuiBin
 from .view_base import ViewBase
@@ -57,35 +57,31 @@ class SelectSources(QGroupBox):
         self._source_list.reset()
 
 
-class SelectBaseMod(QHBoxLayout):
+class SelectBaseMod(HLabeldCombo):
     def __init__(self, bin: GuiBin):
-        super().__init__()
         self._locale = bin.locale
         self._service = bin.service
-        self._base_combo = QComboBox()
-        self._base_combo.activated.connect(
+        super().__init__(self._locale["mods"]["mod_base"])
+        self._combo.activated.connect(
             lambda: self._refresh_mods()
-            if self._base_combo.currentText() == self._locale["refresh"]
+            if self._combo.currentText() == self._locale["refresh"]
             else None
         )
         self._refresh_mods()
 
-        self.addWidget(QLabel(self._locale["mods"]["mod_base"]))
-        self.addWidget(self._base_combo)
-
     @property
     def selected(self) -> str:
-        return self._base_combo.currentText()
+        return self._combo.currentText()
 
     def _refresh_mods(self):
-        self._base_combo.clear()
-        self._base_combo.addItem(self._locale["refresh"])
-        self._base_combo.addItem("BackUp")
-        self._base_combo.addItems(self._service.get_applied_mods())
-        self._base_combo.setCurrentIndex(1)
+        self._combo.clear()
+        self._combo.addItem(self._locale["refresh"])
+        self._combo.addItem("BackUp")
+        self._combo.addItems(self._service.get_applied_mods())
+        self._combo.setCurrentIndex(1)
 
     def reset(self):
-        self._base_combo.setCurrentIndex(1)
+        self._combo.setCurrentIndex(1)
 
 
 class ModView(ViewBase):
