@@ -1,1 +1,1 @@
-from .factory import locale
+from .factory import *
