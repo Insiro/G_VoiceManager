@@ -1,4 +1,3 @@
-from src.mod_tool import ModTool
 from abc import ABCMeta, abstractmethod
 from src.bin import CliBin
 from time import sleep
@@ -12,7 +11,6 @@ BREAK = False
 
 class Cli(metaclass=ABCMeta):
     _menu: dict[int, str] = {}
-    _tool: ModTool
     _bin: CliBin
     _service: ModService
     _level: str = "Menu Name, Required Override"
