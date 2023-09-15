@@ -25,7 +25,7 @@ class ConfigService:
         self.resource_path = self._conf.resource_path
         self.genshin_path = self._conf.genshin_path
         self.mod_sources_path = self._conf.mod_sources_path
-        self.language = self._conf.language
+        self.voice_lang = self._conf.voice_lang
         self.backup_path = self._conf.backup_path
 
     def commit(self):
@@ -33,7 +33,7 @@ class ConfigService:
         self._conf.resource_path = self.resource_path
         self._conf.genshin_path = self.genshin_path
         self._conf.mod_sources_path = self.mod_sources_path
-        self._conf.language = self.language
+        self._conf.voice_lang = self.voice_lang
         self._conf.backup_path = self.backup_path
         self._conf.save()
 
@@ -71,7 +71,7 @@ class ConfigService:
                 formatLine(
                     "resource_path", conf.resource_path, self.resource_path, plen
                 ),
-                formatLine("mod_language", conf.language, self.language, plen),
+                formatLine("mod_language", conf.voice_lang, self.voice_lang, plen),
                 formatLine("temp_path", conf.temp_path, self.temp_path, plen),
             ]
         )

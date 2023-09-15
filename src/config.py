@@ -7,7 +7,7 @@ class Config:
     resource_path: str
     genshin_path: str  # Path to Genshin Path, audio path will replaced as Symbolic Link
     mod_sources_path: str  # path to Origianl Mod Source Files Saved
-    language: str
+    voice_lang: str
     backup_path: str
 
     @staticmethod
@@ -17,14 +17,14 @@ class Config:
         genshin_path: str,
         mod_sources_path: str,
         backup_path: str,
-        language: str,
+        voice_lang: str,
     ):
         config = Config()
         config.temp_path = temp_path
         config.resource_path = resource_path
         config.genshin_path = genshin_path
         config.mod_sources_path = mod_sources_path
-        config.language = language
+        config.voice_lang = voice_lang
         config.backup_path = backup_path
         return config
 
@@ -52,7 +52,7 @@ class Config:
         sym = path.join(
             self.genshin_path,
             "GenshinImpact_Data\\StreamingAssets\\AudioAssets",
-            self.language,
+            self.voice_lang,
         )
         return sym
 
@@ -67,7 +67,7 @@ class Config:
             mod_sources_path=".\\resources\\mods",
             resource_path=".\\resources",
             genshin_path="C:\\Program Files\\Genshin Impact\\Genshin Impact game",
-            language="Korean",
+            voice_lang="Korean",
             backup_path=".\\resources\\backup",
         )
         conf.save()

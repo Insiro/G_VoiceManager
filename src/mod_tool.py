@@ -29,7 +29,7 @@ class ModTool:
     def move_and_link_original(self):
         if not path.isdir(self.config.sym_path):
             raise NotValidPathException("selected language is Not installed")
-        lang_backup = path.join(self.config.backup_path, self.config.language)
+        lang_backup = path.join(self.config.backup_path, self.config.voice_lang)
         if path.exists(lang_backup):
             rmtree(lang_backup)
         print("--------backup original sound files------")
@@ -39,7 +39,7 @@ class ModTool:
     # region Step 2 : mod source insert
     def reset_input_path(self):
         self.input_changed = False
-        self.input_path = path.join(self.config.backup_path, self.config.language)
+        self.input_path = path.join(self.config.backup_path, self.config.voice_lang)
 
     def set_input_path(self, input_path: str):
         self.input_changed = True
@@ -67,7 +67,7 @@ class ModTool:
 
     # Step 4 : Apply Mod
     def apply(self, mod_path: str):
-        lang_backup_path = path.join(self.config.backup_path, self.config.language)
+        lang_backup_path = path.join(self.config.backup_path, self.config.voice_lang)
         if self.input_changed:
             copy_contents(
                 lang_backup_path,
@@ -88,7 +88,9 @@ class ModTool:
 
     def restore(self, link=True):
         os.unlink(self.config.sym_path)
-        origin = path.abspath(path.join(self.config.backup_path, self.config.language))
+        origin = path.abspath(
+            path.join(self.config.backup_path, self.config.voice_lang)
+        )
         sym = self.config.sym_path
 
         if link:

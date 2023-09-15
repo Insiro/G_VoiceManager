@@ -28,7 +28,7 @@ class ConfigCli(Cli):
             )
             if selected == None:
                 return CONTINUE
-            self.conf_service.language = selected
+            self.conf_service.voice_lang = selected
             # TODO: list languages, select
             return CONTINUE
         if selected_idx == 5:
