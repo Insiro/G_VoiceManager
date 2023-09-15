@@ -1,7 +1,5 @@
-from src.config import Config
+from src.bin import CliBin, Config
 from src.cli import MainCli
-
-from src.bin import CliBin
 
 config = Config.load()
 bin = CliBin(config)

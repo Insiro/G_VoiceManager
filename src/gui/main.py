@@ -1,7 +1,6 @@
 from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import QWidget, QTabWidget, QVBoxLayout, QWidget
-from src.config import Config
-from src.bin import GuiBin
+from src.bin import GuiBin, Config
 from src.gui.view import ModView, MainView, ConfigView
 
 

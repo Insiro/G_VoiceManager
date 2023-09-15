@@ -4,10 +4,10 @@ from PyQt6.QtCore import QObject, pyqtSlot
 from PyQt6.QtWidgets import QWidget
 
 from locales import locale
-from src.config import Config
 from src.gui.components import ErrorModal, Modal, ProcessOverlay
 
 from ..bin import Bin
+from ..config import Config
 from .worker import Worker
 
 

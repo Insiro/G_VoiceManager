@@ -1,10 +1,10 @@
 import os
 from os import path
 
-from src.config import Config
 from src.utils.dir import is_empty_dir
 from src.utils.error import *
 
+from .config import Config
 from .mod_tool import ModTool
 
 
