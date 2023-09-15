@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
     QHBoxLayout,
     QComboBox,
 )
-from src.gui.bin import Bin
+from src.bin import GuiBin
 from .view_base import ViewBase
 
 
@@ -13,7 +13,7 @@ class MainView(ViewBase):
     mod_ComboBox: QComboBox
     restore_combo: QComboBox
 
-    def __init__(self, bin: Bin):
+    def __init__(self, bin: GuiBin):
         super().__init__(bin)
         backup_btn = QPushButton("BackUp")
         backup_btn.clicked.connect(self.backup)

@@ -1,11 +1,8 @@
-from src.config import Config
-from src.mod_tool import ModTool
-from src.gui.main import start_gui
-from src.service import ModService
 import sys
 
-config = Config.load()
-tool = ModTool(config)
-service = ModService(tool)
+from src.config import Config
+from src.gui.main import start_gui
+
 argv: list[str] = sys.argv
-start_gui(argv, service)
+config = Config.load()
+start_gui(argv, config)

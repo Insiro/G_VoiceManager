@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import (
     QAbstractItemView,
     QLineEdit,
 )
-from src.gui.bin import Bin
+from src.bin import GuiBin
 from .view_base import ViewBase
 
 
@@ -20,7 +20,7 @@ class SelectSources(QGroupBox):
     def selectedItem(self) -> list[str]:
         return [item.text() for item in self._source_list.selectedItems()]
 
-    def __init__(self, bin: Bin) -> None:
+    def __init__(self, bin: GuiBin) -> None:
         super().__init__()
         self._locale = bin.locale
         self.setTitle(self._locale["mods"]["source_select"])
@@ -57,7 +57,7 @@ class SelectSources(QGroupBox):
 
 
 class SelectBaseMod(QHBoxLayout):
-    def __init__(self, bin: Bin):
+    def __init__(self, bin: GuiBin):
         super().__init__()
         self._locale = bin.locale
         self._service = bin.service
@@ -90,7 +90,7 @@ class SelectBaseMod(QHBoxLayout):
 class ModView(ViewBase):
     _edit_mod_name: QLineEdit
 
-    def __init__(self, bin: Bin):
+    def __init__(self, bin: GuiBin):
         super().__init__(bin)
 
         self.source_list = SelectSources(bin)

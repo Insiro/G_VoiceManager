@@ -24,13 +24,13 @@ class ConfigCli(Cli):
             self.conf_service.commit()
         if selected_idx == 6:
             selected = self._sub_menu(
-                "Language", "voice language", self.conf_service.get_langList()
+                "Language", "voice language", self.conf_service.voice_list
             )
             if selected == None:
                 return CONTINUE
             self.conf_service.voice_lang = selected
-            # TODO: list languages, select
             return CONTINUE
+
         if selected_idx == 5:
             print("recommand to select save disk drive with genshin")
         selected = self.select_path(selected_idx)
@@ -59,6 +59,6 @@ class ConfigCli(Cli):
             return spath
 
     def _on_enter_menu(self) -> bool:
-        self.conf_service = self._service.configservice
+        self.conf_service = self._bin.conf_service
         print(self.conf_service.format())
         return True

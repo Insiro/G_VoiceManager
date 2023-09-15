@@ -1,10 +1,8 @@
 from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import QWidget, QTabWidget, QVBoxLayout, QWidget
-from src.gui.bin import Bin
+from src.config import Config
+from src.bin import GuiBin
 from src.gui.view import ModView, MainView, ConfigView
-
-
-from src.service import ModService
 
 
 class MyApp(QWidget):
@@ -16,9 +14,9 @@ class MyApp(QWidget):
     def current(self):
         return self.side_bar.current
 
-    def __init__(self, service: ModService):
+    def __init__(self, config: Config):
         super().__init__()
-        self.__bin = Bin(self, service)
+        self.__bin = GuiBin(self, config)
         self.__locale = self.__bin.locale
         layout = QVBoxLayout()
         layout.addWidget(self.init_header())
@@ -51,8 +49,8 @@ import sys
 from qt_material import apply_stylesheet
 
 
-def start_gui(argv, service: ModService):
+def start_gui(argv, config: Config):
     app = QtWidgets.QApplication(argv)
     apply_stylesheet(app, theme="light_blue.xml")
-    ex = MyApp(service)
+    ex = MyApp(config)
     sys.exit(app.exec())

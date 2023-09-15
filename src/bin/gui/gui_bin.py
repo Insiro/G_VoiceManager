@@ -1,18 +1,20 @@
-from PyQt6.QtCore import pyqtSlot, QObject
+from typing import Any, Callable
+
+from PyQt6.QtCore import QObject, pyqtSlot
 from PyQt6.QtWidgets import QWidget
+
 from locales import locale
+from src.bin.bin import Bin
+from src.config import Config
+from src.gui.components import ErrorModal, Modal, ProcessOverlay
 
-from src.service import ModService
-
-from src.gui.components import ErrorModal, ProcessOverlay, Modal
 from .worker import Worker
-from typing import Callable, Any
 
 
-class Bin(QObject):
+class GuiBin(QObject):
     @property
     def service(self):
-        return self.__service
+        return self._bin.service
 
     @property
     def process_overlay(self):
@@ -26,15 +28,15 @@ class Bin(QObject):
     def modal(self):
         return self.__error_modal
 
-    def __init__(self, root: QWidget, service: ModService) -> None:
+    def __init__(self, root: QWidget, config: Config) -> None:
         super().__init__(root)
+        self._bin = Bin(config)
         self.__root = root
-        self.__service = service
         self.__overlay = ProcessOverlay(root)
         self.__error_modal = ErrorModal(root)
         self.__modal = Modal(root)
         self.__worker = Worker(root)
-        self.locale = locale(service._config.lang)
+        self.locale = locale(config.lang)
 
         self.__worker.fisnish.connect(self._finishWork)
         self.__worker.error.connect(self._openErrorModal)
