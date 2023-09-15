@@ -27,6 +27,7 @@ class ConfigService:
         self.mod_sources_path = self._conf.mod_sources_path
         self.voice_lang = self._conf.voice_lang
         self.backup_path = self._conf.backup_path
+        self.lang = self._conf.lang
 
     def commit(self):
         self._conf.temp_path = self.temp_path
@@ -35,6 +36,7 @@ class ConfigService:
         self._conf.mod_sources_path = self.mod_sources_path
         self._conf.voice_lang = self.voice_lang
         self._conf.backup_path = self.backup_path
+        self._conf.lang = self.lang
         self._conf.save()
 
     def get_langList(self):
@@ -73,6 +75,7 @@ class ConfigService:
                 ),
                 formatLine("mod_language", conf.voice_lang, self.voice_lang, plen),
                 formatLine("temp_path", conf.temp_path, self.temp_path, plen),
+                formatLine("display language", conf.lang, self.lang, plen),
             ]
         )
 

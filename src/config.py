@@ -9,6 +9,7 @@ class Config:
     mod_sources_path: str  # path to Origianl Mod Source Files Saved
     voice_lang: str
     backup_path: str
+    lang: str
 
     @staticmethod
     def __assign(
@@ -18,6 +19,7 @@ class Config:
         mod_sources_path: str,
         backup_path: str,
         voice_lang: str,
+        lang: str,
     ):
         config = Config()
         config.temp_path = temp_path
@@ -26,6 +28,7 @@ class Config:
         config.mod_sources_path = mod_sources_path
         config.voice_lang = voice_lang
         config.backup_path = backup_path
+        config.lang = lang
         return config
 
     @property
@@ -69,6 +72,7 @@ class Config:
             genshin_path="C:\\Program Files\\Genshin Impact\\Genshin Impact game",
             voice_lang="Korean",
             backup_path=".\\resources\\backup",
+            lang="en",
         )
         conf.save()
         return conf
