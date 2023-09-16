@@ -108,7 +108,7 @@ class GenModView(ViewBase):
         pack_btn = QPushButton(self._locale["genmods"]["pack"])
 
         pack_btn.clicked.connect(
-            lambda: self.bin.threading(
+            lambda: self._bin.threading(
                 self._pack,
                 self._edit_mod_name.text()
                 + " "
@@ -128,13 +128,13 @@ class GenModView(ViewBase):
         else:
             self._service.select_base_mod(selected)
         for source in self.source_list.selectedItem:
-            self.bin.process_overlay.desc_text = (
-                f"{source} {self._locale['mods']['preparing']}"
+            self._bin.process_overlay.desc_text = (
+                f"{source} {self._locale['genmods']['preparing']}"
             )
             self._service.prepare_mod_source(source)
         mod_name = self._edit_mod_name.text()
-        self.bin.process_overlay.desc_text = (
-            f"{mod_name} {self._locale['mods']['packing']}"
+        self._bin.process_overlay.desc_text = (
+            f"{mod_name} {self._locale['genmods']['packing']}"
         )
         self._service.pack_mod(mod_name)
         self._service.clear_source()
