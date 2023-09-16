@@ -21,8 +21,16 @@ class ModView(ViewBase):
         self.listview.addItems(self._service.get_applied_mods())
 
     def _delete_items(self):
-        selected = self.listview.currentItem().text()
-        job = lambda: self._service.delete_mod(selected)
+        selected = self.listview.currentItem()
+        if selected is None:
+            self._bin.show_modal("Item is Not Selected")
+            return
         self._bin.threading(
-            job, f"{selected} {self._locale['mod']['delete']} {self._locale['success']}"
+            self._delete_work,
+            f"{selected.text()} {self._locale['mod']['delete']} {self._locale['success']}",
         )
+
+    def _delete_work(self):
+        selected = self.listview.currentItem().text()
+        self._service.delete_mod(selected)
+        self.reset()
