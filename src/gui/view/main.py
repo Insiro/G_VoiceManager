@@ -6,6 +6,8 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QLabel,
 )
+
+from utils.error import NotValidSymLinkException
 from ..bin import GuiBin
 from .view_base import ViewBase
 
@@ -89,10 +91,14 @@ class MainView(ViewBase):
 
     def backup(self):
         self._bin.threading(
-            self._service.isolate_original,
+            self.backup_job,
             f"{self._locale['main']['backup']} {self._locale['success']}",
             self._locale["main"]["backup_fail"],
         )
+
+    def backup_job(self):
+        self._service.isolate_original()
+        self.reset()
 
     def restore(self):
         self._bin.threading(
@@ -112,7 +118,10 @@ class MainView(ViewBase):
             return
         mod_name = self.mod_ComboBox.currentText()
         print(mod_name)
-        self._service.apply(mod_name)
+        try:
+            self._service.apply(mod_name)
+        except NotValidSymLinkException as e:
+            self._bin.show_modal("cannot find symlink")
         self.reset()
 
     def reloadMods(self):

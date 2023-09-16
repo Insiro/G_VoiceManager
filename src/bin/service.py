@@ -83,18 +83,15 @@ def formatLine(name, conf, cur, confLen: int) -> str:
 
 
 class ModService:
-    _is_symlink_valid: bool
-
     def __init__(self, tool: ModTool) -> None:
         self._config = tool.config
         self._tool = tool
         self._selected_sources: list[str] = []
-        self.updateSymLinkState()
 
     # region property
     @property
     def validSymlink(self) -> bool:
-        return self._is_symlink_valid
+        return path.islink(self._config.sym_path)
 
     @property
     def configString(self) -> str:
@@ -141,10 +138,9 @@ class ModService:
 
     # Step 1 : Backup
     def isolate_original(self):
-        if self._is_symlink_valid:
+        if self.validSymlink:
             raise NotValidDirException()
         self._tool.move_and_link_original()
-        self._is_symlink_valid = True
 
     def reset_base(self):
         self._tool.reset_input_path()
@@ -203,9 +199,6 @@ class ModService:
     def validDir(self, dir: str):
         if not path.isdir(dir):
             raise NotValidDirException()
-
-    def updateSymLinkState(self):
-        self._is_symlink_valid = path.islink(self._config.sym_path)
 
     @property
     def valiDateGenshinDir(self) -> bool:
