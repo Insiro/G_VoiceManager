@@ -29,6 +29,6 @@ class Worker(QThread):
         except Exception as e:
             msg = "UnExpected Error : " + e.__class__.__name__
             print(traceback.format_exc())
-            self.error.emit(msg)
+            self.error.emit(traceback.format_exc())
         finally:
             self.work = None

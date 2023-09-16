@@ -9,6 +9,7 @@ from .alert import Alert
 from .bin import Config, GuiBin
 from .g_path_fix import GPathFix
 from .view import ConfigView, GenModView, MainView, ModView
+from .logger import setLogging
 
 
 class MyApp(QWidget):
@@ -45,6 +46,7 @@ class MyApp(QWidget):
 
 
 def start(argv, config: Config):
+    setLogging()
     bin = GuiBin(config)
     if not config.hide:
         alertApp = QtWidgets.QApplication(argv)
