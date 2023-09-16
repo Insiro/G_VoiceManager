@@ -29,7 +29,7 @@ class Header(QGroupBox):
             return
         if act := self._service.is_activated_original_and_link:
             self._state.setText(
-                f"{self._locale['origianl']} "
+                f"{self._locale['original']} "
                 + f"{self._locale['link']} {self._locale['activated']}"
                 if act == 1
                 else self._locale["no_backup"]
@@ -111,6 +111,7 @@ class MainView(ViewBase):
             self.reloadMods()
             return
         mod_name = self.mod_ComboBox.currentText()
+        print(mod_name)
         self._service.apply(mod_name)
         self.reset()
 
