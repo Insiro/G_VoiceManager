@@ -107,32 +107,42 @@ class GenModView(ViewBase):
         )
         pack_btn = QPushButton(self._locale["genmods"]["pack"])
 
-        pack_btn.clicked.connect(
-            lambda: self._bin.threading(
-                self._pack,
-                self._edit_mod_name.text()
-                + " "
-                + self._locale["genmods"]["gen_success"],
-                self._locale["genmods"]["pack_failed"],
-            )
-        )
+        pack_btn.clicked.connect(self._pack)
         layout.addWidget(self._edit_mod_name)
         layout.addWidget(pack_btn)
 
         return layout
 
     def _pack(self):
+        mod_name = self._edit_mod_name.text().strip()
+        selected = self.source_list.selectedItem
+        if len(selected) == 0:
+            self._bin.show_modal("Item is Not Selected")
+            return
+        if mod_name == "":
+            self._bin.show_modal("mod name is not defined")
+            return
+        self._bin.threading(
+            self._packJob,
+            self._edit_mod_name.text() + " " + self._locale["genmods"]["gen_success"],
+            self._locale["genmods"]["pack_failed"],
+        )
+
+    def _packJob(self):
         self._service.clear_source()
         if (selected := self.select_base.selected) == "BackUp":
             self._service.reset_base()
         else:
             self._service.select_base_mod(selected)
-        for source in self.source_list.selectedItem:
+
+        mod_name = self._edit_mod_name.text().strip()
+        selected = self.source_list.selectedItem
+
+        for source in selected:
             self._bin.process_overlay.desc_text = (
                 f"{source} {self._locale['genmods']['preparing']}"
             )
             self._service.prepare_mod_source(source)
-        mod_name = self._edit_mod_name.text()
         self._bin.process_overlay.desc_text = (
             f"{mod_name} {self._locale['genmods']['packing']}"
         )
