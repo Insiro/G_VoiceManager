@@ -62,4 +62,6 @@ locale_map = Locale(
     wrong="Wrong",
     selected="Selected",
     save="Save",
+    notselected="Not Selected",
+    item="Item",
 )

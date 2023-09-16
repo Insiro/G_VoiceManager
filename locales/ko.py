@@ -62,4 +62,6 @@ locale_map = Locale(
     wrong="오류",
     selected="선택한",
     save="저장",
+    item="항목",
+    notselected="선택안됨",
 )

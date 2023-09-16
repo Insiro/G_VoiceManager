@@ -23,7 +23,9 @@ class ModView(ViewBase):
     def _delete_items(self):
         selected = self.listview.currentItem()
         if selected is None:
-            self._bin.show_modal("Item is Not Selected")
+            self._bin.show_modal(
+                f"{self._locale['item']} {self._locale['notselected']}"
+            )
             return
         self._bin.threading(
             self._delete_work,
@@ -31,6 +33,7 @@ class ModView(ViewBase):
         )
 
     def _delete_work(self):
+        self._bin.process_overlay.desc_text = "deleting"
         selected = self.listview.currentItem().text()
         self._service.delete_mod(selected)
         self.reset()

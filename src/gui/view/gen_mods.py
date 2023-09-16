@@ -117,7 +117,9 @@ class GenModView(ViewBase):
         mod_name = self._edit_mod_name.text().strip()
         selected = self.source_list.selectedItem
         if len(selected) == 0:
-            self._bin.show_modal("Item is Not Selected")
+            self._bin.show_modal(
+                f"{self._locale['item']} {self._locale['notselected']}"
+            )
             return
         if mod_name == "":
             self._bin.show_modal("mod name is not defined")

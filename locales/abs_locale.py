@@ -71,3 +71,5 @@ class Locale(TypedDict):
     wrong: str
     selected: str
     save: str
+    notselected: str
+    item: str
