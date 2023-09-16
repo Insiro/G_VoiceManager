@@ -95,13 +95,16 @@ class MainView(ViewBase):
         )
 
     def restore(self):
-        selected = self.restore_combo.currentText()
-        work = lambda: self._service.restore(selected == self._locale["main"]["link"])
         self._bin.threading(
-            work,
+            self.restoreWork,
             self._locale["main"]["restore"] + " " + self._locale["success"],
             self._locale["main"]["restore"] + " " + self._locale["failed"],
         )
+
+    def restoreWork(self):
+        selected = self.restore_combo.currentText()
+        self._service.restore(selected == self._locale["main"]["link"])
+        self.reset()
 
     def apply(self):
         if 0 == self.mod_ComboBox.currentIndex():
@@ -109,6 +112,7 @@ class MainView(ViewBase):
             return
         mod_name = self.mod_ComboBox.currentText()
         self._service.apply(mod_name)
+        self.reset()
 
     def reloadMods(self):
         self.mod_ComboBox.clear()
@@ -118,5 +122,6 @@ class MainView(ViewBase):
 
     def reset(self):
         self.header.updateState()
+        self.reloadMods()
         self.mod_ComboBox.setCurrentIndex(-1)
         self.restore_combo.setCurrentIndex(0)
