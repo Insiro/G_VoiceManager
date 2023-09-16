@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import (
     QLabel,
 )
 
-from utils.error import NotValidSymLinkException
+from src.utils.error import NotValidSymLinkException
 from ..bin import GuiBin
 from .view_base import ViewBase
 

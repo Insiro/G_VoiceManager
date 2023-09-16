@@ -65,7 +65,13 @@ def start(argv, config: Config):
         if not ex.passed:
             exit()
 
+    bin = GuiBin(config)
     mainApp = QtWidgets.QApplication(argv)
     apply_stylesheet(mainApp, theme=config.theme, invert_secondary=True)
-    ex = MyApp(bin)
-    sys.exit(mainApp.exec())
+    try:
+        ex = MyApp(bin)
+        sys.exit(mainApp.exec())
+    except Exception as e:
+        import traceback
+
+        print(traceback.format_exc())
