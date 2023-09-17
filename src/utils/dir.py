@@ -53,11 +53,11 @@ def link_contents(
 ):
     check_mkdirs(dist)
     for item in tqdm(os.listdir(src), msg):
-        if not condition(item):
-            continue
-
         src_item = path.abspath(path.join(src, item))
         dist_item = path.join(dist, item)
         if path.islink(dist_item):
             os.unlink(dist_item)
+        elif not condition(item):
+            continue
+
         os.symlink(src_item, dist_item)
