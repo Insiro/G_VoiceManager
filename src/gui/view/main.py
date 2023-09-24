@@ -19,13 +19,23 @@ class Header(QGroupBox):
         self._service = bin.service
         self._locale = bin.locale["main"]
         self._state = QLabel()
-        layout = QHBoxLayout()
-        layout.addWidget(QLabel("Mod State"))
-        layout.addWidget(self._state)
+        self._lang = QLabel()
+        layout = QVBoxLayout()
+        r1 = QHBoxLayout()
+        r1.addWidget(QLabel("Language"))
+        r1.addWidget(self._lang)
+
+        r2 = QHBoxLayout()
+        r2.addWidget(QLabel("Mod State"))
+        r2.addWidget(self._state)
+        layout.addLayout(r1)
+        layout.addLayout(r2)
         self.setLayout(layout)
         self.updateState()
 
     def updateState(self):
+        self._lang.setText(self._bin.conf_service.voice_lang)
+
         if not self._service.exist_voice:
             self._state.setText(self._locale["removed"])
             return
