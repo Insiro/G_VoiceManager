@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QListWidget, QPushButton
 from src.gui.bin import GuiBin
 from .view_base import ViewBase
+from os import startfile, path
 
 
 class ModView(ViewBase):
@@ -12,9 +13,14 @@ class ModView(ViewBase):
         self.setLayout(self._layout)
         btn = QPushButton("Delete", self)
         btn.clicked.connect(self._delete_items)
+        folderBtn = QPushButton("open folder")
+        folderBtn.clicked.connect(
+            lambda: startfile(path.realpath(self._bin.config.packed_mods_path))
+        )
 
         self._layout.addWidget(self.listview)
         self._layout.addWidget(btn)
+        self._layout.addWidget(folderBtn)
 
     def reset(self):
         self.listview.clear()

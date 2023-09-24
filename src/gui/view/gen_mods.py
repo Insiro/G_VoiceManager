@@ -1,3 +1,5 @@
+from os import path, startfile
+
 from PyQt6.QtWidgets import (
     QAbstractItemView,
     QGroupBox,
@@ -15,6 +17,8 @@ from src.gui.components import HLabeldCombo
 from ..bin import GuiBin
 from .view_base import ViewBase
 
+SPolicy = QSizePolicy.Policy
+
 
 class SelectSources(QGroupBox):
     @property
@@ -23,6 +27,7 @@ class SelectSources(QGroupBox):
 
     def __init__(self, bin: GuiBin) -> None:
         super().__init__()
+        self._bin = bin
         self._locale = bin.locale
         self.setTitle(self._locale["genmods"]["source_select"])
         self._service = bin.service
@@ -31,19 +36,24 @@ class SelectSources(QGroupBox):
         self._source_list.setSelectionMode(
             QAbstractItemView.SelectionMode.MultiSelection
         )
-        self._source_list.setSizePolicy(
-            QSizePolicy.Policy.Fixed,
-            QSizePolicy.Policy.Expanding,
-        )
+        self._source_list.setSizePolicy(SPolicy.Fixed, SPolicy.Expanding)
 
         refresh_btn = QPushButton(self._locale["refresh"])
         refresh_btn.clicked.connect(self._refresh_mod_list)
+        folder_btn = QPushButton("Open Folder")
+        folder_btn.clicked.connect(
+            lambda: startfile(path.realpath(self._bin.conf_service.mod_sources_path))
+        )
+
+        hbox = QHBoxLayout()
+        hbox.addWidget(refresh_btn)
+        hbox.addWidget(folder_btn)
 
         layout = QVBoxLayout()
         layout.addWidget(self._source_list)
-        layout.addWidget(refresh_btn)
-        self._refresh_mod_list()
+        layout.addLayout(hbox)
         self.setLayout(layout)
+        self._refresh_mod_list()
 
     def _refresh_mod_list(self):
         self.mod_sources = self._service.get_mod_sources()
@@ -54,6 +64,7 @@ class SelectSources(QGroupBox):
             self._source_list.addItem(item)
 
     def reset(self):
+        self._refresh_mod_list()
         self._source_list.reset()
 
 
@@ -81,6 +92,7 @@ class SelectBaseMod(HLabeldCombo):
         self._combo.setCurrentIndex(1)
 
     def reset(self):
+        self._refresh_mods()
         self._combo.setCurrentIndex(1)
 
 

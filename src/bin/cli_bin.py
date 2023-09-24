@@ -10,4 +10,4 @@ class CliBin(Bin):
 
     def __init__(self, config: Config) -> None:
         self._conf_service = ConfigService(config)
-        super().__init__(config)
+        super().__init__(config, True)

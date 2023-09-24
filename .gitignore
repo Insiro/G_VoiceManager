@@ -199,5 +199,7 @@ temp/input_pck/*
 temp/output_pck/*
 temp/wem/*
 resources/*
-config.json
+*.json
 themes.txt
+*.lnk
+*.exe

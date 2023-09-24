@@ -55,9 +55,29 @@ def link_contents(
     for item in tqdm(os.listdir(src), msg):
         src_item = path.abspath(path.join(src, item))
         dist_item = path.join(dist, item)
-        if path.islink(dist_item):
-            os.unlink(dist_item)
-        elif not condition(item):
+        if path.isfile(src_item):
+            link_file(src_item, dist_item, condition)
             continue
+        link_folder(src_item, dist_item, condition)
 
-        os.symlink(src_item, dist_item)
+
+def link_folder(
+    src: str, dist: str, condition: Callable[[str], bool] = lambda file: True
+):
+    if not path.isdir(dist):
+        os.makedirs(dist)
+    for item in os.listdir(src):
+        src_item = path.join(src, item)
+        dist_item = path.join(dist, item)
+        link_file(src_item, dist_item, condition)
+
+
+def link_file(
+    src: str, dist: str, condition: Callable[[str], bool] = lambda file: True
+):
+    src_name = path.basename(src)
+    if path.islink(dist):
+        os.unlink(dist)
+    elif not condition(src_name):
+        return
+    os.symlink(src, dist)

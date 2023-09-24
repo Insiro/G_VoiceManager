@@ -34,6 +34,10 @@ class GuiBin(QObject):
     def config(self):
         return self._config
 
+    @property
+    def logger(self):
+        return self._bin.logger
+
     def __init__(self, config: Config, root: QWidget | None = None) -> None:
         self._bin = Bin(config)
         self.__root = root
@@ -56,6 +60,7 @@ class GuiBin(QObject):
     @pyqtSlot(str)
     def _openErrorModal(self, msg: str):
         self.__overlay.stop()
+        self.logger.error(msg)
         self.__error_modal.msg = msg
         self.__error_modal.show()
 
