@@ -88,6 +88,10 @@ class ModService:
         self._tool = tool
         self._selected_sources: list[str] = []
 
+    @property
+    def logger(self):
+        return self._tool.logger
+
     # region property
     @property
     def validSymlink(self) -> bool:
@@ -138,6 +142,7 @@ class ModService:
 
     # Step 1 : Backup
     def isolate_original(self):
+        self.logger.info("Isolate Original")
         if self.validSymlink:
             raise NotValidDirException()
         self._tool.move_and_link_original()
@@ -160,6 +165,7 @@ class ModService:
             print(e)
 
     def prepare_mod_source(self, source_name: str):
+        self.logger.info(f"prepare mod Source, {source_name}")
         source_path = path.join(self._config.mod_sources_path, source_name)
         self.validDir(source_path)
         self._tool.prepare_mod_source(source_path)
@@ -168,10 +174,10 @@ class ModService:
     # endregion
     # Step 3 : generate mod files
     def pack_mod(self, mod_name: str):
-        config = self._config
-        if is_empty_dir(config.wem_path):
+        if is_empty_dir(self._config.wem_path):
             raise ModSourceNotReadyException()
-        mod_path = path.join(config.packed_mods_path, mod_name)
+
+        mod_path = path.join(self._config.packed_mods_path, mod_name)
         self._tool.pack_mod_files(mod_path)
 
     # Step 4 : Apply Mod
@@ -184,11 +190,11 @@ class ModService:
         self._tool.apply(mod_path)
 
     def delete_mod(self, mod_name: str):
-        config = self._config
         if self.current_mod == mod_name:
             self.restore(True)
             pass
-        mod_path = path.join(config.packed_mods_path, mod_name)
+        mod_path = path.join(self._config.packed_mods_path, mod_name)
+        self.logger.info(f"remove mod {mod_name}")
         rmtree(mod_path)
 
     def restore(self, link=True):

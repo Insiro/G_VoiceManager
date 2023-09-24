@@ -127,10 +127,11 @@ class MainView(ViewBase):
             self.reloadMods()
             return
         mod_name = self.mod_ComboBox.currentText()
-        print(mod_name)
+        self._bin.logger.info(f"apply mod {mod_name}")
         try:
             self._service.apply(mod_name)
         except NotValidSymLinkException as e:
+            self._bin.logger.error("cnnot find symlink")
             self._bin.show_modal("cannot find symlink")
         self.reset()
 
