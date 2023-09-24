@@ -38,7 +38,7 @@ class ConfigData:
         locale: str = "ko",
         hide: bool = False,
         theme="light_pink.xml",
-        log=True,
+        log=False,
         *args,
         **kwargs,
     ):

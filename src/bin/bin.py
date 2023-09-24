@@ -16,12 +16,12 @@ class Bin:
         return self.__logger
 
     def __init__(self, config: Config, logConsole=False, *args, **kwargs) -> None:
-        logger = self.init_logger(logConsole)
+        logger = self.init_logger(config, logConsole)
         tool = ModTool(config, logger)
         self._service = ModService(tool)
         self.__logger = logger
 
-    def init_logger(self, logConsole):
+    def init_logger(self, config: Config, logConsole):
         logger = logging.getLogger()
 
         logger.setLevel(logging.DEBUG)
@@ -30,9 +30,11 @@ class Bin:
         stderr_log_handler.setFormatter(formatter)
         file_log_handler = logging.FileHandler("GVM.log", "a", encoding="utf-8")
         file_log_handler.setFormatter(formatter)
+        logger.addHandler(file_log_handler)
+        if config.log:
+            file_log_handler.setLevel(logging.WARN)
         if logConsole:
             logger.addHandler(stderr_log_handler)
-        logger.addHandler(file_log_handler)
 
         sys.stdout = LoggerWriter(logging.debug)
         sys.stderr = LoggerWriter(logging.warn)
