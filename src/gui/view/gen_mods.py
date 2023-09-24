@@ -54,6 +54,7 @@ class SelectSources(QGroupBox):
             self._source_list.addItem(item)
 
     def reset(self):
+        self._refresh_mod_list()
         self._source_list.reset()
 
 
@@ -81,6 +82,7 @@ class SelectBaseMod(HLabeldCombo):
         self._combo.setCurrentIndex(1)
 
     def reset(self):
+        self._refresh_mods()
         self._combo.setCurrentIndex(1)
 
 
