@@ -16,6 +16,7 @@ class ConfigData:
     locale: str
     hide: bool
     theme: str
+    log: bool
 
     def __init__(self, data: ConfigData | None = None) -> None:
         if data is not None:
@@ -37,6 +38,7 @@ class ConfigData:
         locale: str = "ko",
         hide: bool = False,
         theme="light_pink.xml",
+        log=True,
         *args,
         **kwargs,
     ):
@@ -50,6 +52,7 @@ class ConfigData:
         ins.locale = locale
         ins.hide = hide
         ins.theme = theme
+        ins.log = log
         return ins
 
     def copyData(self, data: ConfigData):
@@ -62,6 +65,7 @@ class ConfigData:
         self.locale = data.locale
         self.hide = data.hide
         self.theme = data.theme
+        self.log = data.log
         return self
 
     def dict(self):
