@@ -3,13 +3,13 @@ from os import path
 from .FilePackager import Package, build_pck_file
 
 
-def repack(wav_path: str, input_path: str, output_path: str):
+def repack(wav_path: str, input_path: str, output_path: str, logger):
     for i in os.scandir(wav_path):
         output_file_name = path.join(
             output_path, i.name + ".pck"
         )  # output_path + i.name + ".pck"
         if os.path.exists(output_file_name) == False:
-            print(output_file_name)
+            logger.info(f"packing {output_file_name}")
             modify_pck = Package()  # init
             modify_pck.addfile(
                 open(path.join(input_path, i.name + ".pck"), "rb")
