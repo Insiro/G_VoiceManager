@@ -73,6 +73,7 @@ class ConfigData:
 
 
 assetSub = "GenshinImpact_Data\\StreamingAssets\\AudioAssets"
+persisSub = "GenshinImpact_Data\\Persistent\\AudioAssets"
 
 
 class Config(ConfigData):
@@ -96,6 +97,10 @@ class Config(ConfigData):
     def sym_path(self) -> str:
         sym = path.join(self.genshin_path, assetSub, self.voice_lang)
         return sym
+
+    @property
+    def persistant_path(self) -> str:
+        return path.join(self.genshin_path, persisSub, self.voice_lang)
 
     @classmethod
     def load(cls, config_path: str | None = None):
