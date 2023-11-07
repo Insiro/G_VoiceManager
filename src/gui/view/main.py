@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import (
     QPushButton,
     QVBoxLayout,
     QLabel,
+    QWidget,
 )
 
 from src.utils.error import NotValidSymLinkException
@@ -21,34 +22,61 @@ class Header(QGroupBox):
         self._state = QLabel()
         self._lang = QLabel()
         layout = QVBoxLayout()
-        r1 = QHBoxLayout()
-        r1.addWidget(QLabel("Language"))
-        r1.addWidget(self._lang)
 
-        r2 = QHBoxLayout()
-        r2.addWidget(QLabel("Mod State"))
-        r2.addWidget(self._state)
-        layout.addLayout(r1)
-        layout.addLayout(r2)
+        # region Current Language
+        row_lang = QHBoxLayout()
+        row_lang.addWidget(QLabel("Language"))
+        row_lang.addWidget(self._lang)
+        layout.addLayout(row_lang)
+        # endregion
+
+        # region Current ModState
+        row_state = QHBoxLayout()
+        row_state.addWidget(QLabel("Mod State"))
+        row_state.addWidget(self._state)
+        layout.addLayout(row_state)
+        # endregion
+
+        # region Persist
+        self._persist = QWidget()
+        self._persist.setLayout(QHBoxLayout())
+        rm_persist_btn = QPushButton("Remove")
+        rm_persist_btn.setProperty("class", "danger")
+        rm_persist_btn.setProperty("flat", "true")
+        rm_persist_btn.setStyleSheet("text-align:left;")
+        rm_persist_btn.clicked.connect(self.removePersistant)
+        self._persist.layout().addWidget(QLabel("Persistant Exist"))
+        self._persist.layout().addWidget(rm_persist_btn)
+        layout.addWidget(self._persist)
+        # endregion
+
         self.setLayout(layout)
         self.updateState()
 
     def updateState(self):
         self._lang.setText(self._bin.conf_service.voice_lang)
-
+        state = ""
         if not self._service.exist_voice:
-            self._state.setText(self._locale["removed"])
-            return
-        if act := self._service.is_activated_original_and_link:
-            self._state.setText(
-                f"{self._locale['original']} "
-                + f"{self._locale['link']} {self._locale['activated']}"
-                if act == 1
-                else self._locale["no_backup"]
-            )
+            state = self._locale["removed"]
+        elif act := self._service.is_activated_original_and_link:
+            if act == 1:
+                state = f"{self._locale['original']} {self._locale['link']} {self._locale['activated']}"
+            else:
+                state = self._locale["no_backup"]
+        else:
+            state = self._service.current_mod + f" {self._locale['activated']}"
 
-            return
-        self._state.setText(self._service.current_mod + f" {self._locale['activated']}")
+        self._state.setText(state)
+
+        # Update Persistant State
+        self._persist.setVisible(self._service.exist_persistant)
+
+    def removePersistant(self):
+        def rmjob():
+            self._service.delete_persistant()
+            self.updateState()
+
+        self._bin.threading(rmjob)
 
 
 class MainView(ViewBase):
@@ -100,15 +128,15 @@ class MainView(ViewBase):
         return bg
 
     def backup(self):
+        def backup_job():
+            self._service.isolate_original()
+            self.reset()
+
         self._bin.threading(
-            self.backup_job,
+            backup_job,
             f"{self._locale['main']['backup']} {self._locale['success']}",
             self._locale["main"]["backup_fail"],
         )
-
-    def backup_job(self):
-        self._service.isolate_original()
-        self.reset()
 
     def restore(self):
         self._bin.threading(

@@ -209,3 +209,12 @@ class ModService:
     @property
     def valiDateGenshinDir(self) -> bool:
         return path.isdir(self._config.lang_list_path)
+
+    @property
+    def exist_persistant(self) -> bool:
+        persis = self._config.persistant_path
+        return path.isdir(persis)
+
+    def delete_persistant(self):
+        if self.exist_persistant:
+            rmtree(self._config.persistant_path)

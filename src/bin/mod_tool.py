@@ -55,7 +55,12 @@ class ModTool:
         rmtree(self.config.wem_path)
 
     def prepare_mod_source(self, source_path: str):
-        link_contents(source_path, self.config.wem_path, "preparing mod files")
+        link_contents(
+            source_path,
+            self.config.wem_path,
+            "preparing mod files",
+            lambda file: file.endswith("wem"),
+        )
 
     # endregion
 
