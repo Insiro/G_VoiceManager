@@ -39,7 +39,7 @@ class ModTool:
 
         self.logger.info(f"backup sound files, lang : {self.config.voice_lang}")
         move(self.config.sym_path, self.config.backup_path)
-        os.symlink(lang_backup, self.config.sym_path, True)
+        os.symlink(os.path.abspath( lang_backup), self.config.sym_path, True)
 
     # region Step 2 : mod source insert
     def reset_input_path(self):
