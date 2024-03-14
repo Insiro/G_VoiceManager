@@ -5,4 +5,4 @@
     - 이 프로그램을 사용하는 동안 발생하는 문제에 대해서는 일체의 책임을 지지 않습니다.
     - 백업은 필수입니다. 업데이트 중에 복구할 수 있도록 백업을 철저히 해주시기 바랍니다.
 
-[사용법](https://github.com/Insiro/GenshinVoiceManager/wiki)
+[사용법](https://github.com/Insiro/G_VoiceManager/wiki)
